@@ -1,4 +1,6 @@
-export default {
+export type breakpointsTYPE = { [x: string]: number };
+
+const breakpoints: breakpointsTYPE = {
     xs: 0,
     sm: 601,
     md: 768,
@@ -12,3 +14,4 @@ export default {
     '7k': 6145,
     '8k': 6901
 };
+export default breakpoints;

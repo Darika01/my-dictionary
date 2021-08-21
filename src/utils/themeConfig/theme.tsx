@@ -1,5 +1,6 @@
 import { createTheme } from '@material-ui/core/styles';
 
+import overrides from './MuiComponentsOverrides';
 import typography from './typography';
 
 export const colorPrimaryMain = 'rgba(18, 21, 70, 1)'; // #121546
@@ -31,6 +32,7 @@ export default createTheme({
     // divider: {
     //     border: `.1rem solid ${palette.border.primary}`
     // },
+    //@ts-ignore
     overrides: {
         MuiCssBaseline: {
             '@global': {
@@ -53,23 +55,11 @@ export default createTheme({
                 }
             }
         },
-        MuiFormHelperText: {
-            root: {
-                fontWeight: 400,
-                fontSize: '0.75rem',
-                lineHeight: 1.66,
-                letterSpacing: '0.03333em',
-                marginTop: 4
-            },
-            contained: {
-                marginLeft: 0,
-                marginRight: 0
-            }
-        }
-    },
-    props: {
-        MuiButtonBase: {
-            disableRipple: true
-        }
+        ...overrides
     }
+    // props: {
+    //     MuiButtonBase: {
+    //         disableRipple: true
+    //     }
+    // }
 });
