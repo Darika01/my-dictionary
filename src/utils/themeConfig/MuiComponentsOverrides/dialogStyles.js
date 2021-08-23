@@ -1,6 +1,8 @@
 const dialogStyles = {
     MuiDialog: {
         paper: {
+            minWidth: '60%',
+            minHeight: '60%',
             margin: '3.2rem'
         }
     },

@@ -1,46 +1,216 @@
-import { Typography } from '@material-ui/core';
+import { useEffect, useState } from 'react';
+
+import axios from 'axios';
+import RectangularButton from 'components/atoms/buttons/RectangularButton';
+import FormikInput from 'components/molecules/textfields/FormikInput';
+import FormikSelect from 'components/molecules/textfields/FormikSelect';
+import CustomTable from 'components/organisms/CustomTable';
+import { Form, Formik } from 'formik';
+import * as Yup from 'yup';
+
+import {
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    List,
+    ListItem,
+    Typography
+} from '@material-ui/core';
+import { Close, Save } from '@material-ui/icons';
+
+export type wordTypeTYPE = 'word' | 'phrase' | 'sentence';
+type dataTYPE = {
+    word: string;
+    wordType: wordTypeTYPE;
+};
 
 const Dashboard: React.FC = () => {
+    const columns = [
+        { title: 'EN', value: 'en' },
+        { title: 'PL', value: 'pl' },
+        { title: 'Definition', value: 'definition', cellSize: 'small' },
+        { title: 'Category', value: 'category', cellSize: 'small' }
+    ];
+
+    const [DetailsData, setDetailsData] = useState<any>(null);
+
+    const getData = () => {
+        axios
+            .get('http://localhost:8080/api/words')
+            .then(res => {
+                console.log(res.data);
+                setData(res.data);
+            })
+            .catch(err => console.log(err));
+    };
+
+    const [Data, setData] = useState([]);
+
+    useEffect(() => {
+        getData();
+    }, []);
+
+    const postData = async (data: dataTYPE, { resetForm }: any) => {
+        // await new Promise(resolve => setTimeout(resolve, 1500));
+        axios
+            .post('http://localhost:8080/api/word', {
+                text: data.word,
+                wordType: data.wordType,
+                langTo: 'pl'
+            })
+            .then(res => {
+                console.log(res);
+                getData();
+                resetForm();
+            })
+            .catch(err => console.log(err));
+    };
+    const deleteWord = async ({ id }: any) => {
+        // await new Promise(resolve => setTimeout(resolve, 1500));
+        axios
+            .delete(`http://localhost:8080/api/word/${id}`)
+            .then(res => {
+                console.log(res);
+                getData();
+            })
+            .catch(err => console.log(err));
+    };
+    const detailsWord = async ({ id }: any) => {
+        // await new Promise(resolve => setTimeout(resolve, 1500));
+        axios
+            .get(`http://localhost:8080/api/word/details/${id}`)
+            .then(res => {
+                console.log(res);
+                setDetailsData(res.data);
+                getData();
+            })
+            .catch(err => console.log(err));
+    };
+    console.log('DetailsData :>> ', DetailsData);
+
+    const validationSchema = Yup.object().shape({
+        word: Yup.string().required('This field is required')
+        // word: Yup.string().required('This field is required')
+    });
+
+    const setInitErrors = () => {
+        return {
+            word: 'This field is required'
+        };
+    };
+
     return (
         <div>
-            <Typography variant="body1">
-                Quis dolore tempor do exercitation eu. Voluptate mollit enim excepteur sunt qui proident voluptate id
-                mollit elit. In commodo nisi enim id id pariatur quis Lorem. Id eiusmod nulla ipsum laboris commodo quis
-                minim qui cillum. Irure eiusmod anim in occaecat aute sit ad anim sit adipisicing laboris aute quis. Ad
-                exercitation id consequat sit laboris et proident id incididunt veniam. Pariatur dolor qui culpa sit ad
-                officia ea proident eiusmod. Velit adipisicing ea consequat esse cupidatat sit ipsum in anim sunt ut
-                duis dolor pariatur. Qui occaecat in laborum elit amet consequat nulla excepteur id culpa nostrud non
-                Lorem commodo. Magna velit commodo ut dolor irure qui ipsum pariatur cillum non laboris veniam elit ea.
-                Laborum laboris est reprehenderit magna ullamco fugiat duis. Dolor est est magna nostrud aliqua sunt
-                veniam nisi duis dolore cupidatat reprehenderit ullamco nostrud. Cillum et non ut deserunt quis magna
-                commodo dolore mollit occaecat irure. Ea laborum labore ea laborum in nisi minim commodo. Exercitation
-                sint labore cillum aliqua mollit incididunt dolore velit. Labore sunt commodo ullamco adipisicing
-                officia dolor. Consequat amet est eu culpa ullamco nulla adipisicing proident et in commodo. Id ad esse
-                veniam Lorem excepteur deserunt duis et nostrud. Consectetur Lorem quis ea culpa pariatur cupidatat
-                magna ea ex fugiat anim labore nulla. Sint deserunt dolore sit eu voluptate do excepteur deserunt
-                voluptate. Laborum officia ipsum dolore nisi cillum quis labore eu amet in. Nisi aliqua nulla consequat
-                irure duis cillum sint ex cillum in esse tempor sint. Nostrud duis sunt et nulla esse amet. Ad nostrud
-                esse elit esse non occaecat nisi eiusmod aute. Tempor aliqua est veniam anim minim veniam Lorem esse
-                consectetur. Velit magna eiusmod deserunt eiusmod deserunt laboris voluptate anim amet. Qui officia sint
-                in reprehenderit officia qui Lorem pariatur aliquip. Lorem labore aute qui dolore in commodo laboris est
-                do eiusmod. Exercitation commodo nisi ut nulla excepteur anim enim laboris consequat nulla. Aliquip
-                adipisicing mollit do incididunt in cillum fugiat labore elit sit deserunt anim elit. Commodo irure
-                laborum deserunt anim deserunt labore esse incididunt reprehenderit pariatur esse quis incididunt
-                nostrud. Incididunt dolore excepteur est tempor anim eu ex ullamco pariatur nulla duis. Irure Lorem
-                tempor laboris aliqua anim nisi duis do culpa commodo incididunt ad esse. Officia et exercitation
-                ullamco ipsum excepteur id irure ex et excepteur proident consequat ullamco. Voluptate quis nisi laboris
-                voluptate ullamco dolor qui laborum consequat tempor voluptate officia nostrud sint. Irure fugiat ex
-                nostrud quis dolor pariatur non excepteur do pariatur. Nostrud ea aute aute aute occaecat consequat
-                incididunt esse occaecat id. Consectetur et magna officia elit anim eu dolore proident ad in eiusmod.
-                Sit velit Lorem ipsum sit elit minim sint Lorem aute irure Lorem. Nostrud ex aliqua nisi est sint
-                ullamco eu dolor aliquip tempor fugiat labore. Aliquip esse commodo minim voluptate ut nulla id. Amet
-                officia excepteur qui esse non cillum qui sint. Nulla occaecat fugiat reprehenderit do fugiat et
-                reprehenderit quis laboris ad adipisicing irure. Anim ex aliquip in id deserunt excepteur esse
-                incididunt laboris officia sit deserunt. Officia ad amet voluptate laborum eiusmod anim in aliquip
-                laborum reprehenderit est excepteur. Occaecat aliquip deserunt consectetur consequat fugiat do ullamco
-                cillum officia aliquip ea velit. Quis nisi culpa et labore exercitation qui ad dolor labore laborum. Id
-                est aute dolore elit sint ut commodo laboris aliqua nulla enim.
-            </Typography>
+            <Formik
+                initialValues={{ word: '', wordType: 'word' }}
+                validationSchema={validationSchema}
+                initialErrors={setInitErrors()}
+                onSubmit={postData}
+                // onReset={() => history.push("/tickets")}
+            >
+                {formProps => (
+                    <Form className="formContainer">
+                        <div className="formContent">
+                            <FormikInput name="word" label="Word" />
+                            <FormikSelect
+                                name="wordType"
+                                label="Word type"
+                                options={[
+                                    { value: 'word', label: 'Word' },
+                                    { value: 'sentence', label: 'Sentence' },
+                                    { value: 'phrase', label: 'Phrase' }
+                                ]}
+                            />
+                        </div>
+                        <RectangularButton
+                            text="Submit"
+                            color="primary"
+                            type="submit"
+                            loading={formProps.isSubmitting}
+                            disabled={formProps.isSubmitting || !formProps.isValid}
+                            startIcon={<Save />}
+                        />
+                    </Form>
+                )}
+            </Formik>
+            <CustomTable columns={columns} data={Data} onDelete={deleteWord} onDetails={detailsWord} />
+            {DetailsData && (
+                <Dialog open={Boolean(DetailsData)}>
+                    <DialogTitle>
+                        Word details{' '}
+                        <Typography variant="body1" component="span" color="primary">
+                            {DetailsData.word.en}
+                        </Typography>
+                    </DialogTitle>
+                    <DialogContent>
+                        {Object.entries(DetailsData).map(([key, value]: any) => {
+                            if (key === 'word') {
+                                return (
+                                    <List key={key}>
+                                        {Object.entries(value).map(([elKey, elVal]: any) => {
+                                            return (
+                                                <ListItem key={elKey}>
+                                                    {elKey}:{' '}
+                                                    <Typography variant="body2" component="span">
+                                                        {elVal}
+                                                    </Typography>
+                                                </ListItem>
+                                            );
+                                        })}
+                                    </List>
+                                );
+                            } else
+                                return (
+                                    <List key={key}>
+                                        {value.map((defEl: any) => {
+                                            return (
+                                                <ListItem key={defEl.definition}>
+                                                    <div>
+                                                        <div>
+                                                            definition:{' '}
+                                                            <Typography variant="body2" component="span">
+                                                                {defEl.definition}
+                                                            </Typography>
+                                                        </div>
+                                                        {defEl.example && (
+                                                            <div>
+                                                                example:{' '}
+                                                                <Typography variant="body2" component="span">
+                                                                    {defEl.example}
+                                                                </Typography>
+                                                            </div>
+                                                        )}
+                                                        {defEl.synonyms?.length > 0 && (
+                                                            <div>
+                                                                synonyms:{' '}
+                                                                <Typography variant="body2" component="span">
+                                                                    {defEl.synonyms?.map((el: string, id: number) =>
+                                                                        id !== defEl.synonyms.length - 1
+                                                                            ? el + ', '
+                                                                            : el
+                                                                    )}
+                                                                </Typography>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </ListItem>
+                                            );
+                                        })}
+                                    </List>
+                                );
+                        })}
+                    </DialogContent>
+                    <DialogActions>
+                        <RectangularButton
+                            text="Close"
+                            color="primary"
+                            handleClick={() => setDetailsData(null)}
+                            startIcon={<Close />}
+                        />
+                    </DialogActions>
+                </Dialog>
+            )}
         </div>
     );
 };

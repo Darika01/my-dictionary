@@ -27,6 +27,16 @@ const inputStyles = {
             },
             '& .MuiSelect-select:focus': {
                 backgroundColor: 'inherit'
+            },
+            '& .selectIcon': {
+                position: 'absolute',
+                right: '1.6rem',
+                top: 'calc(50% - 1rem)',
+                pointerEvents: 'none',
+                '& > .MuiSvgIcon-root': {
+                    width: '2rem',
+                    height: 'auto'
+                }
             }
         },
         adornedEnd: {
@@ -56,6 +66,7 @@ const inputStyles = {
             }
         },
         root: {
+            height: '3.9rem',
             borderRadius: '.4rem',
             '& .MuiInputAdornment-positionEnd': {
                 marginRight: '.4rem',
@@ -83,8 +94,8 @@ const inputStyles = {
                 }
             },
             '& .MuiSelect-select': {
-                padding: '0',
-                height: '3.9rem',
+                // padding: '0',
+                // height: '3.9rem',
                 paddingRight: '2.8rem',
                 '& > span, .MuiTypography-body1': {
                     padding: '1rem 1.4rem',
