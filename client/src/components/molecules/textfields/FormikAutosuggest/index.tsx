@@ -33,12 +33,11 @@ const FormikAutosuggest: React.FC<FormikAutosuggestProps> = ({
     multiple,
     formik
 }) => {
-    const { setFieldValue, errors, setTouched, touched, values } = formik;
+    const classes = useStyles();
     const theme = useTheme();
+    const { setFieldValue, errors, setTouched, touched, values } = formik;
 
     const showError = Boolean(touched[name] && errors[name]);
-
-    const classes = useStyles();
 
     const [autosuggestOpen, setAutosuggestOpen] = React.useState(false);
 

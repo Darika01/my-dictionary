@@ -57,11 +57,10 @@ const CustomTable: <TRow extends Record<string, any>>(props: CustomTableI<TRow>)
     return (
         <TableContainer
             component={Paper}
-            className={classes.tableContainer}
             style={{ maxHeight: `calc(100vh - 4rem - ${tableRef.current?.offsetTop}px)` }}
             ref={tableRef}
         >
-            <Table stickyHeader aria-label="table">
+            <Table stickyHeader aria-label="table" style={{ minWidth: '60rem' }}>
                 <TableHead>
                     <TableRow>
                         <>

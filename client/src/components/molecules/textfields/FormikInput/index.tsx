@@ -26,7 +26,6 @@ const FormikInput: React.FC<FormikInputProps> = ({ formik, name, label, type = '
                 id={name}
                 as={TextField}
                 variant="outlined"
-                fullWidth
                 label={label}
                 type={type}
                 // error={error}

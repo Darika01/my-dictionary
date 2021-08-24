@@ -7,6 +7,8 @@ import { TextField } from '@material-ui/core';
 import MenuItem from '@material-ui/core/MenuItem';
 import { ExpandLess, ExpandMore } from '@material-ui/icons';
 
+import useStyles from './styles';
+
 interface FormikSelectI extends FormikValues {
     name: string;
     options: {
@@ -27,11 +29,12 @@ const FormikSelect: React.FC<FormikSelectI> = ({
     variant = 'outlined',
     formik
 }) => {
+    const classes = useStyles();
     const { values, setFieldValue } = formik;
     const [SelectIconMenuOpened, setSelectIconMenuOpened] = useState(false);
 
     return (
-        <div className="fieldContainer">
+        <div className={clsx('fieldContainer', classes.selectFieldContainer)}>
             <TextField
                 name={name}
                 id={name}
@@ -68,7 +71,6 @@ const FormikSelect: React.FC<FormikSelectI> = ({
                     },
                     fullWidth: true
                 }}
-                fullWidth
             >
                 {options !== null &&
                     options !== undefined &&

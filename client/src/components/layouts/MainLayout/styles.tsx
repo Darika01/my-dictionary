@@ -8,7 +8,8 @@ const useStyles = makeStyles(() => ({
         flexGrow: 1,
         padding: '2rem 1.6rem',
         maxWidth: '128rem',
-        margin: '0 auto'
+        margin: '0 auto',
+        overflowX: 'auto'
     }
 }));
 
