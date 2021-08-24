@@ -1,43 +1,44 @@
-import { makeStyles, Theme } from "@material-ui/core";
-import getLighterColor from "utils/getLighterColor";
+import getLighterColor from 'utils/getLighterColor';
+
+import { makeStyles, Theme } from '@material-ui/core';
+
+export type colorTYPE = 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
 
 type StylesProps = {
-    color: "primary" | "secondary" | "error" | "info" | "success" | "warning";
+    color: colorTYPE;
 };
 
 export const useStyles = makeStyles((theme: Theme) => ({
     wrapper: {
-        position: "relative"
+        position: 'relative'
     },
     buttonProgress: {
-        position: "absolute",
-        top: "50%",
-        left: "50%",
-        marginTop: "-0.8rem",
-        marginLeft: "-0.8rem",
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        marginTop: '-0.8rem',
+        marginLeft: '-0.8rem',
         color: ({ color }) => theme.palette[color].main
     },
     contained: {
         color: theme.palette.common.white,
         backgroundColor: ({ color }: StylesProps) => theme.palette[color].main,
-        "&:hover": {
+        '&:hover': {
             backgroundColor: ({ color }) => theme.palette[color].dark
         },
-        "&:active": {
+        '&:active': {
             backgroundColor: ({ color }) => theme.palette[color].light
         }
     },
     outlined: {
         color: ({ color }) => theme.palette[color].main,
         borderColor: ({ color }) => theme.palette[color].main,
-        "&:hover": {
-            backgroundColor: ({ color }) =>
-                getLighterColor(theme.palette[color].main, 0.08),
+        '&:hover': {
+            backgroundColor: ({ color }) => getLighterColor(theme.palette[color].main, 0.08),
             borderColor: ({ color }) => theme.palette[color].main
         },
-        "&:active": {
-            backgroundColor: ({ color }) =>
-                getLighterColor(theme.palette[color].main, 0.15),
+        '&:active': {
+            backgroundColor: ({ color }) => getLighterColor(theme.palette[color].main, 0.15),
             borderColor: ({ color }) => theme.palette[color].main
         }
     },
@@ -45,13 +46,11 @@ export const useStyles = makeStyles((theme: Theme) => ({
     text: {
         color: ({ color }) => theme.palette[color].main,
         backgroundColor: theme.palette.common.white,
-        "&:hover": {
-            backgroundColor: ({ color }) =>
-                getLighterColor(theme.palette[color].main, 0.08)
+        '&:hover': {
+            backgroundColor: ({ color }) => getLighterColor(theme.palette[color].main, 0.08)
         },
-        "&:active": {
-            backgroundColor: ({ color }) =>
-                getLighterColor(theme.palette[color].main, 0.15)
+        '&:active': {
+            backgroundColor: ({ color }) => getLighterColor(theme.palette[color].main, 0.15)
         }
     }
 }));

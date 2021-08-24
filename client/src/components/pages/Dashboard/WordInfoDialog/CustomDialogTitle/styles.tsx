@@ -1,13 +1,10 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles(() => ({
-    noDataBody: {
-        textAlign: 'center',
-        padding: '4rem 0'
-    },
-    actions: {
+    title: {
         display: 'flex',
-        justifyContent: 'flex-end'
+        alignItems: 'center',
+        justifyContent: 'space-between'
     }
 }));
 

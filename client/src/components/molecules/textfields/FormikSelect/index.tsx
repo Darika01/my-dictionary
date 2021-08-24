@@ -66,10 +66,11 @@ const FormikSelect: React.FC<FormikSelectI> = ({
                             list: clsx('mainInputSelect', disabled && 'inputBlockedValue'),
                             paper: 'selectPaper'
                         },
-                        onExit: () => setSelectIconMenuOpened(false),
-                        onEnter: () => setSelectIconMenuOpened(true)
-                    },
-                    fullWidth: true
+                        TransitionProps: {
+                            onExit: () => setSelectIconMenuOpened(false),
+                            onEnter: () => setSelectIconMenuOpened(true)
+                        }
+                    }
                 }}
             >
                 {options !== null &&

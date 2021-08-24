@@ -1,7 +1,9 @@
 import buttonStyles from './buttonStyles';
+import chipStyles from './chipStyles';
 import dialogStyles from './dialogStyles';
 import fabStyles from './fabStyles';
 import inputStyles from './inputStyles';
+import linkStyles from './linkStyles';
 import listStyles from './listStyles';
 import paperStyles from './paperStyles';
 import pickersStyles from './pickersStyles';
@@ -25,6 +27,8 @@ const overrides = {
     ...snackbarStyles,
     ...tabsStyles,
     ...toolbarStyles,
-    ...listStyles
+    ...listStyles,
+    ...chipStyles,
+    ...linkStyles
 };
 export default overrides;

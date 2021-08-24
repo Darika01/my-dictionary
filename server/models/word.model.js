@@ -19,4 +19,4 @@ Word.method('toJSON', function () {
     return object;
 });
 
-module.exports = mongoose.model('words', Word);
+module.exports = mongoose.model(process.argv.slice(2)[0] === 'test' ? 'test' : 'words', Word);

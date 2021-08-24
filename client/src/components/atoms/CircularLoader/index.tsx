@@ -1,30 +1,33 @@
 import clsx from 'clsx';
 
-import CircularProgress, { CircularProgressProps } from '@material-ui/core/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { useStyles } from './styles';
+import { colorTYPE, positionTYPE, useStyles } from './styles';
 
-interface CircularLoaderI extends CircularProgressProps {
+interface CircularLoaderI {
     overlay?: boolean;
+    position?: positionTYPE;
+    color?: colorTYPE;
     fixed?: boolean;
-    className?: string;
-    size?: number;
+    size?: 'sm' | 'lg';
 }
 
-const CircularLoader: React.FC<CircularLoaderI> = ({ overlay, fixed, className, size }): JSX.Element => {
-    const classes = useStyles();
+const CircularLoader: React.FC<CircularLoaderI> = ({
+    size = 'sm',
+    position = 'relative',
+    color = 'primary'
+}): JSX.Element => {
+    const classes = useStyles({ position, color });
 
     const loaderClasses = clsx(
         classes.container,
-        fixed || overlay ? classes.nonStatic : null,
-        fixed ? classes.fixed : null,
-        overlay ? classes.overlay : null,
-        className
+        position !== 'relative' && classes.nonStatic,
+        size === 'lg' && classes.progressLg
     );
 
     return (
         <div className={loaderClasses}>
-            <CircularProgress size={size} className={classes.progress} color="primary" />
+            <CircularProgress className={clsx(classes.progress, size === 'lg' && classes.progressLg)} />
         </div>
     );
 };

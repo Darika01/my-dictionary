@@ -1,4 +1,4 @@
-import { createTheme } from '@material-ui/core/styles';
+import { unstable_createMuiStrictModeTheme as createMuiTheme } from '@material-ui/core/styles';
 
 import overrides from './MuiComponentsOverrides';
 import typography from './typography';
@@ -8,7 +8,7 @@ export const colorSecondaryMain = 'rgba(234, 90, 118, 1)'; // #ea5a76
 export const colorErrorMain = 'rgba(226, 60, 60, 1)'; // #e23c3c
 export const colorWarningMain = 'rgba(237, 194, 66, 1)'; // #edc242
 
-export default createTheme({
+export default createMuiTheme({
     palette: {
         type: 'light',
         primary: {

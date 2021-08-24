@@ -1,6 +1,7 @@
 import ArrowTooltip from 'components/atoms/ArrowTooltip';
+import CircularLoader from 'components/atoms/CircularLoader';
 
-import { Button, ButtonBaseProps, CircularProgress, SvgIconProps } from '@material-ui/core';
+import { Button, ButtonBaseProps, SvgIconProps } from '@material-ui/core';
 
 import { useStyles } from './styles';
 
@@ -52,7 +53,7 @@ const RectangularButton: React.FC<RectangularButtonProps> = ({
             >
                 <>
                     {text}
-                    {loading && <CircularProgress size="1.6rem" className={classes.buttonProgress} />}
+                    {loading && <CircularLoader position="absolute" color={color} />}
                 </>
             </Button>
         </ArrowTooltip>

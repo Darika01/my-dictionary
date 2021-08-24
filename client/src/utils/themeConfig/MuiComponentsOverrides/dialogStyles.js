@@ -7,6 +7,9 @@ const dialogStyles = {
         }
     },
     MuiDialogActions: {
+        root: {
+            padding: '1.6rem 2.4rem'
+        },
         spacing: {
             '& > :not(:first-child)': {
                 marginLeft: '1.6rem'
@@ -16,6 +19,11 @@ const dialogStyles = {
     MuiDialogTitle: {
         root: {
             padding: '1.6rem 2.4rem'
+        }
+    },
+    MuiDialogContent: {
+        root: {
+            padding: '0 2.4rem 1.6rem'
         }
     }
 };

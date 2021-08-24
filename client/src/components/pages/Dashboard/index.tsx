@@ -2,22 +2,17 @@ import { useEffect, useState } from 'react';
 
 import axios from 'axios';
 import RectangularButton from 'components/atoms/buttons/RectangularButton';
+import BackdropLoader from 'components/molecules/BackdropLoader';
 import FormikInput from 'components/molecules/textfields/FormikInput';
 import FormikSelect from 'components/molecules/textfields/FormikSelect';
 import CustomTable from 'components/organisms/CustomTable';
 import { Form, Formik } from 'formik';
+import moment from 'moment';
 import * as Yup from 'yup';
 
-import {
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    List,
-    ListItem,
-    Typography
-} from '@material-ui/core';
-import { Close, Save } from '@material-ui/icons';
+import { Save } from '@material-ui/icons';
+
+import WordInfoDialog from './WordInfoDialog/WordInfoDialog';
 
 export type wordTypeTYPE = 'word' | 'phrase' | 'sentence';
 type dataTYPE = {
@@ -25,24 +20,53 @@ type dataTYPE = {
     wordType: wordTypeTYPE;
 };
 
+export type worDataTYPE = {
+    category: string;
+    createdAt: string;
+    definition: string;
+    en: string;
+    id: string;
+    pl: string;
+    updatedAt: string;
+    wordType: string;
+};
+export type googleTranslateWordDataTYPE = {
+    definition: string;
+    example?: string;
+    synonyms?: string[];
+};
+
 const Dashboard: React.FC = () => {
     const columns = [
         { title: 'EN', value: 'en' },
         { title: 'PL', value: 'pl' },
         { title: 'Definition', value: 'definition', cellSize: 'small' },
-        { title: 'Category', value: 'category', cellSize: 'small' }
+        { title: 'Category', value: 'category', cellSize: 'small' },
+        { title: 'Word type', value: 'wordType', cellSize: 'small' },
+        { title: 'Date', value: 'updatedAt', cellSize: 'small' }
     ];
 
     const [DetailsData, setDetailsData] = useState<any>(null);
 
+    const [Loading, setLoading] = useState(false);
+
     const getData = () => {
+        setLoading(true);
         axios
             .get('http://localhost:8080/api/words')
             .then(res => {
-                console.log(res.data);
-                setData(res.data);
+                setData(
+                    res.data.map((el: worDataTYPE) => {
+                        el.updatedAt = moment(el.updatedAt).format('DD-MM-YYYY');
+                        return el;
+                    })
+                );
+                setLoading(false);
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.log(err);
+                setLoading(false);
+            });
     };
 
     const [Data, setData] = useState([]);
@@ -53,45 +77,46 @@ const Dashboard: React.FC = () => {
 
     const postData = async (data: dataTYPE, { resetForm }: any) => {
         // await new Promise(resolve => setTimeout(resolve, 1500));
-        axios
+        await axios
             .post('http://localhost:8080/api/word', {
                 text: data.word,
                 wordType: data.wordType,
                 langTo: 'pl'
             })
-            .then(res => {
-                console.log(res);
+            .then(() => {
                 getData();
                 resetForm();
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.log(err);
+            });
     };
     const deleteWord = async ({ id }: any) => {
         // await new Promise(resolve => setTimeout(resolve, 1500));
         axios
             .delete(`http://localhost:8080/api/word/${id}`)
-            .then(res => {
-                console.log(res);
+            .then(() => {
                 getData();
             })
             .catch(err => console.log(err));
     };
     const detailsWord = async ({ id }: any) => {
+        setLoading(true);
         // await new Promise(resolve => setTimeout(resolve, 1500));
-        axios
+        await axios
             .get(`http://localhost:8080/api/word/details/${id}`)
             .then(res => {
-                console.log(res);
                 setDetailsData(res.data);
-                getData();
+                setLoading(false);
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.log(err);
+                setLoading(false);
+            });
     };
-    console.log('DetailsData :>> ', DetailsData);
 
     const validationSchema = Yup.object().shape({
         word: Yup.string().required('This field is required')
-        // word: Yup.string().required('This field is required')
     });
 
     const setInitErrors = () => {
@@ -102,12 +127,12 @@ const Dashboard: React.FC = () => {
 
     return (
         <div>
+            {Loading && <BackdropLoader />}
             <Formik
                 initialValues={{ word: '', wordType: 'word' }}
                 validationSchema={validationSchema}
                 initialErrors={setInitErrors()}
                 onSubmit={postData}
-                // onReset={() => history.push("/tickets")}
             >
                 {formProps => (
                     <Form className="formContainer">
@@ -125,7 +150,6 @@ const Dashboard: React.FC = () => {
                         </div>
                         <RectangularButton
                             text="Submit"
-                            color="primary"
                             type="submit"
                             loading={formProps.isSubmitting}
                             disabled={formProps.isSubmitting || !formProps.isValid}
@@ -135,82 +159,7 @@ const Dashboard: React.FC = () => {
                 )}
             </Formik>
             <CustomTable columns={columns} data={Data} onDelete={deleteWord} onDetails={detailsWord} />
-            {DetailsData && (
-                <Dialog open={Boolean(DetailsData)}>
-                    <DialogTitle>
-                        Word details{' '}
-                        <Typography variant="body1" component="span" color="primary">
-                            {DetailsData.word.en}
-                        </Typography>
-                    </DialogTitle>
-                    <DialogContent>
-                        {Object.entries(DetailsData).map(([key, value]: any) => {
-                            if (key === 'word') {
-                                return (
-                                    <List key={key}>
-                                        {Object.entries(value).map(([elKey, elVal]: any) => {
-                                            return (
-                                                <ListItem key={elKey}>
-                                                    {elKey}:{' '}
-                                                    <Typography variant="body2" component="span">
-                                                        {elVal}
-                                                    </Typography>
-                                                </ListItem>
-                                            );
-                                        })}
-                                    </List>
-                                );
-                            } else
-                                return (
-                                    <List key={key}>
-                                        {value.map((defEl: any) => {
-                                            return (
-                                                <ListItem key={defEl.definition}>
-                                                    <div>
-                                                        <div>
-                                                            definition:{' '}
-                                                            <Typography variant="body2" component="span">
-                                                                {defEl.definition}
-                                                            </Typography>
-                                                        </div>
-                                                        {defEl.example && (
-                                                            <div>
-                                                                example:{' '}
-                                                                <Typography variant="body2" component="span">
-                                                                    {defEl.example}
-                                                                </Typography>
-                                                            </div>
-                                                        )}
-                                                        {defEl.synonyms?.length > 0 && (
-                                                            <div>
-                                                                synonyms:{' '}
-                                                                <Typography variant="body2" component="span">
-                                                                    {defEl.synonyms?.map((el: string, id: number) =>
-                                                                        id !== defEl.synonyms.length - 1
-                                                                            ? el + ', '
-                                                                            : el
-                                                                    )}
-                                                                </Typography>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </ListItem>
-                                            );
-                                        })}
-                                    </List>
-                                );
-                        })}
-                    </DialogContent>
-                    <DialogActions>
-                        <RectangularButton
-                            text="Close"
-                            color="primary"
-                            handleClick={() => setDetailsData(null)}
-                            startIcon={<Close />}
-                        />
-                    </DialogActions>
-                </Dialog>
-            )}
+            {DetailsData && <WordInfoDialog detailsData={DetailsData} onCloseDialog={() => setDetailsData(null)} />}
         </div>
     );
 };

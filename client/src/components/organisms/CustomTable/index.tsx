@@ -54,6 +54,24 @@ const CustomTable: <TRow extends Record<string, any>>(props: CustomTableI<TRow>)
 
     const isActions = typeof onDetails === 'function' || typeof onDelete === 'function' || typeof onEdit === 'function';
 
+    const sortedData = data.map(row => {
+        return Object.entries(row)
+            .sort((a: any, b: any) => {
+                const keyA = columns.findIndex(col => col.value === a[0]),
+                    keyB = columns.findIndex(col => col.value === b[0]);
+                if (keyA < keyB && keyA >= 0 && keyB >= 0) return -1;
+                if (keyA > keyB && keyA >= 0 && keyB >= 0) return 1;
+                return 0;
+            })
+            .reduce(
+                (_sortedObj, key: any) => ({
+                    ..._sortedObj,
+                    [key[0]]: key[1]
+                }),
+                {}
+            );
+    });
+
     return (
         <TableContainer
             component={Paper}
@@ -64,16 +82,16 @@ const CustomTable: <TRow extends Record<string, any>>(props: CustomTableI<TRow>)
                 <TableHead>
                     <TableRow>
                         <>
-                            {columns.map((el: ColumnTYPE) => (
-                                <TableCell key={el.title}>{el.title}</TableCell>
+                            {columns.map((column: ColumnTYPE) => (
+                                <TableCell key={column.title}>{column.title}</TableCell>
                             ))}
                             <TableCell align="right"></TableCell>
                         </>
                     </TableRow>
                 </TableHead>
-                {data.length > 0 ? (
+                {sortedData.length > 0 ? (
                     <TableBody>
-                        {data.map((row: any, id: number) => (
+                        {sortedData.map((row: any, id: number) => (
                             <TableRow key={id}>
                                 <>
                                     {Object.entries(row).map(
@@ -93,22 +111,24 @@ const CustomTable: <TRow extends Record<string, any>>(props: CustomTableI<TRow>)
                                             )
                                     )}
                                     {isActions && (
-                                        <TableCell align="right" style={{ display: 'flex' }}>
-                                            {typeof onDelete === 'function' && (
-                                                <RoundButton size="small" handleClick={() => onDelete(row)}>
-                                                    <Delete />
-                                                </RoundButton>
-                                            )}
-                                            {typeof onDetails === 'function' && (
-                                                <RoundButton size="small" handleClick={() => onDetails(row)}>
-                                                    <Info />
-                                                </RoundButton>
-                                            )}
-                                            {typeof onEdit === 'function' && (
-                                                <RoundButton size="small" handleClick={() => onEdit(row)}>
-                                                    <Create />
-                                                </RoundButton>
-                                            )}
+                                        <TableCell component="th" align="right">
+                                            <div className={classes.actions}>
+                                                {typeof onDetails === 'function' && (
+                                                    <RoundButton size="small" handleClick={() => onDetails(row)}>
+                                                        <Info />
+                                                    </RoundButton>
+                                                )}
+                                                {typeof onEdit === 'function' && (
+                                                    <RoundButton size="small" handleClick={() => onEdit(row)}>
+                                                        <Create />
+                                                    </RoundButton>
+                                                )}
+                                                {typeof onDelete === 'function' && (
+                                                    <RoundButton size="small" handleClick={() => onDelete(row)}>
+                                                        <Delete />
+                                                    </RoundButton>
+                                                )}
+                                            </div>
                                         </TableCell>
                                     )}
                                 </>
@@ -116,9 +136,11 @@ const CustomTable: <TRow extends Record<string, any>>(props: CustomTableI<TRow>)
                         ))}
                     </TableBody>
                 ) : (
-                    <Typography variant="body1" className={classes.noDataBody}>
-                        No data found
-                    </Typography>
+                    <caption>
+                        <Typography variant="body1" className={classes.noDataBody}>
+                            No data found
+                        </Typography>
+                    </caption>
                 )}
             </Table>
         </TableContainer>
