@@ -1,4 +1,6 @@
-import { Chip, Link, Typography } from '@material-ui/core';
+import GoogleTranslateLink from 'components/atoms/GoogleTranslateLink';
+
+import { Chip, Typography } from '@material-ui/core';
 
 import useStyles from './styles';
 
@@ -13,15 +15,9 @@ const CustomChips: React.FC<CustomChipsProps> = ({ values }) => {
                 Synonyms:
             </Typography>
             {values.map((el: string) => (
-                <Link
-                    key={el}
-                    href={`https://translate.google.ru/?sl=en&tl=pl&text=${el}&op=translate`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className={classes.chipLink}
-                >
+                <GoogleTranslateLink key={el} value={el} className={classes.chipLink}>
                     <Chip label={el} variant="outlined" className={classes.chip} />
-                </Link>
+                </GoogleTranslateLink>
             ))}
         </div>
     );

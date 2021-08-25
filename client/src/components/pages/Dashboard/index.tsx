@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import axios from 'axios';
+import API from 'api';
 import RectangularButton from 'components/atoms/buttons/RectangularButton';
 import BackdropLoader from 'components/molecules/BackdropLoader';
 import FormikInput from 'components/molecules/textfields/FormikInput';
@@ -12,12 +12,15 @@ import * as Yup from 'yup';
 
 import { Save } from '@material-ui/icons';
 
+import useStyles from './styles';
+import WordEditDialog from './WordEditDialog/WordEditDialog';
 import WordInfoDialog from './WordInfoDialog/WordInfoDialog';
 
 export type wordTypeTYPE = 'word' | 'phrase' | 'sentence';
 type dataTYPE = {
     word: string;
     wordType: wordTypeTYPE;
+    definition?: string;
 };
 
 export type worDataTYPE = {
@@ -37,6 +40,7 @@ export type googleTranslateWordDataTYPE = {
 };
 
 const Dashboard: React.FC = () => {
+    const classes = useStyles();
     const columns = [
         { title: 'EN', value: 'en' },
         { title: 'PL', value: 'pl' },
@@ -47,13 +51,13 @@ const Dashboard: React.FC = () => {
     ];
 
     const [DetailsData, setDetailsData] = useState<any>(null);
+    const [EditData, setEditData] = useState<worDataTYPE | null>(null);
 
     const [Loading, setLoading] = useState(false);
 
     const getData = () => {
         setLoading(true);
-        axios
-            .get('http://localhost:8080/api/words')
+        API.get('words')
             .then(res => {
                 setData(
                     res.data.map((el: worDataTYPE) => {
@@ -75,14 +79,14 @@ const Dashboard: React.FC = () => {
         getData();
     }, []);
 
-    const postData = async (data: dataTYPE, { resetForm }: any) => {
+    const postData = async ({ word, wordType, definition }: dataTYPE, { resetForm }: any) => {
         // await new Promise(resolve => setTimeout(resolve, 1500));
-        await axios
-            .post('http://localhost:8080/api/word', {
-                text: data.word,
-                wordType: data.wordType,
-                langTo: 'pl'
-            })
+        await API.post('word', {
+            text: word,
+            wordType: wordType,
+            definition: definition,
+            langTo: 'pl'
+        })
             .then(() => {
                 getData();
                 resetForm();
@@ -91,10 +95,10 @@ const Dashboard: React.FC = () => {
                 console.log(err);
             });
     };
+
     const deleteWord = async ({ id }: any) => {
         // await new Promise(resolve => setTimeout(resolve, 1500));
-        axios
-            .delete(`http://localhost:8080/api/word/${id}`)
+        API.delete(`word/${id}`)
             .then(() => {
                 getData();
             })
@@ -103,8 +107,7 @@ const Dashboard: React.FC = () => {
     const detailsWord = async ({ id }: any) => {
         setLoading(true);
         // await new Promise(resolve => setTimeout(resolve, 1500));
-        await axios
-            .get(`http://localhost:8080/api/word/details/${id}`)
+        await API.get(`word/details/${id}`)
             .then(res => {
                 setDetailsData(res.data);
                 setLoading(false);
@@ -125,41 +128,58 @@ const Dashboard: React.FC = () => {
         };
     };
 
+    const closeEditDialog = (shouldUpdateTableData: boolean) => {
+        setEditData(null);
+        if (shouldUpdateTableData) getData();
+    };
+
     return (
         <div>
             {Loading && <BackdropLoader />}
             <Formik
-                initialValues={{ word: '', wordType: 'word' }}
+                initialValues={{ word: '', wordType: 'word', definition: '' }}
                 validationSchema={validationSchema}
                 initialErrors={setInitErrors()}
                 onSubmit={postData}
             >
                 {formProps => (
                     <Form className="formContainer">
-                        <div className="formContent">
-                            <FormikInput name="word" label="Word" />
-                            <FormikSelect
-                                name="wordType"
-                                label="Word type"
-                                options={[
-                                    { value: 'word', label: 'Word' },
-                                    { value: 'sentence', label: 'Sentence' },
-                                    { value: 'phrase', label: 'Phrase' }
-                                ]}
+                        <div className={classes.form}>
+                            <div>
+                                <FormikInput name="word" label="Word" />
+                                <FormikSelect
+                                    name="wordType"
+                                    label="Word type"
+                                    options={[
+                                        { value: 'word', label: 'Word' },
+                                        { value: 'sentence', label: 'Sentence' },
+                                        { value: 'phrase', label: 'Phrase' }
+                                    ]}
+                                />
+                            </div>
+                            <FormikInput name="definition" label="Definition" fullWidth />
+                        </div>
+                        <div>
+                            <RectangularButton
+                                text="Submit"
+                                type="submit"
+                                loading={formProps.isSubmitting}
+                                disabled={formProps.isSubmitting || !formProps.isValid}
+                                startIcon={<Save />}
                             />
                         </div>
-                        <RectangularButton
-                            text="Submit"
-                            type="submit"
-                            loading={formProps.isSubmitting}
-                            disabled={formProps.isSubmitting || !formProps.isValid}
-                            startIcon={<Save />}
-                        />
                     </Form>
                 )}
             </Formik>
-            <CustomTable columns={columns} data={Data} onDelete={deleteWord} onDetails={detailsWord} />
+            <CustomTable
+                columns={columns}
+                data={Data}
+                onDetails={detailsWord}
+                onEdit={(row: worDataTYPE) => setEditData(row)}
+                onDelete={deleteWord}
+            />
             {DetailsData && <WordInfoDialog detailsData={DetailsData} onCloseDialog={() => setDetailsData(null)} />}
+            {EditData && <WordEditDialog data={EditData} onCloseDialog={closeEditDialog} />}
         </div>
     );
 };

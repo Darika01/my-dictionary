@@ -16,15 +16,6 @@ export default makeStyles(theme => ({
             boxShadow: 'none !important'
         },
         '.fieldContainer': {
-            // width: '100%',
-            // maxWidth: '24rem',
-            '&:not(:last-child)': {
-                marginRight: '2rem',
-                [theme.breakpoints.down(breakpoints.md)]: {
-                    marginBottom: '2rem',
-                    marginRight: 0
-                }
-            },
             [theme.breakpoints.down(breakpoints.sm)]: {
                 '& .MuiFormControl-root': {
                     width: '100%'
@@ -36,15 +27,6 @@ export default makeStyles(theme => ({
             marginBottom: '4rem',
             [theme.breakpoints.down(breakpoints.md)]: {
                 flexDirection: 'column'
-            }
-        },
-        '.formContent': {
-            display: 'flex',
-            marginRight: '3.2rem',
-            [theme.breakpoints.down(breakpoints.md)]: {
-                marginBottom: '3.2rem',
-                flexDirection: 'column',
-                marginRight: 0
             }
         }
     }

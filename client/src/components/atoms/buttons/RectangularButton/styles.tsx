@@ -2,7 +2,7 @@ import getLighterColor from 'utils/getLighterColor';
 
 import { makeStyles, Theme } from '@material-ui/core';
 
-export type colorTYPE = 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
+export type colorTYPE = 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | 'grey';
 
 type StylesProps = {
     color: colorTYPE;
@@ -18,39 +18,44 @@ export const useStyles = makeStyles((theme: Theme) => ({
         left: '50%',
         marginTop: '-0.8rem',
         marginLeft: '-0.8rem',
-        color: ({ color }) => theme.palette[color].main
+        color: ({ color }) => (color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main)
     },
     contained: {
         color: theme.palette.common.white,
-        backgroundColor: ({ color }: StylesProps) => theme.palette[color].main,
+        backgroundColor: ({ color }: StylesProps) =>
+            color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main,
         '&:hover': {
-            backgroundColor: ({ color }) => theme.palette[color].dark
+            backgroundColor: ({ color }) => (color === 'grey' ? theme.palette.grey[500] : theme.palette[color].dark)
         },
         '&:active': {
-            backgroundColor: ({ color }) => theme.palette[color].light
+            backgroundColor: ({ color }) => (color === 'grey' ? theme.palette.grey[500] : theme.palette[color].light)
         }
     },
     outlined: {
-        color: ({ color }) => theme.palette[color].main,
-        borderColor: ({ color }) => theme.palette[color].main,
+        color: ({ color }) => (color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main),
+        borderColor: ({ color }) => (color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main),
         '&:hover': {
-            backgroundColor: ({ color }) => getLighterColor(theme.palette[color].main, 0.08),
-            borderColor: ({ color }) => theme.palette[color].main
+            backgroundColor: ({ color }) =>
+                getLighterColor(color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main, 0.08),
+            borderColor: ({ color }) => (color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main)
         },
         '&:active': {
-            backgroundColor: ({ color }) => getLighterColor(theme.palette[color].main, 0.15),
-            borderColor: ({ color }) => theme.palette[color].main
+            backgroundColor: ({ color }) =>
+                getLighterColor(color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main, 0.15),
+            borderColor: ({ color }) => (color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main)
         }
     },
 
     text: {
-        color: ({ color }) => theme.palette[color].main,
+        color: ({ color }) => (color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main),
         backgroundColor: theme.palette.common.white,
         '&:hover': {
-            backgroundColor: ({ color }) => getLighterColor(theme.palette[color].main, 0.08)
+            backgroundColor: ({ color }) =>
+                getLighterColor(color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main, 0.08)
         },
         '&:active': {
-            backgroundColor: ({ color }) => getLighterColor(theme.palette[color].main, 0.15)
+            backgroundColor: ({ color }) =>
+                getLighterColor(color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main, 0.15)
         }
     }
 }));

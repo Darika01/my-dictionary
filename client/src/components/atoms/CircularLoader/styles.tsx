@@ -1,7 +1,7 @@
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
 export type positionTYPE = 'relative' | 'absolute' | 'fixed';
-export type colorTYPE = 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
+export type colorTYPE = 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | 'grey';
 
 type StylesProps = {
     position: positionTYPE;
@@ -15,7 +15,7 @@ export const useStyles = makeStyles((theme: Theme) => ({
         position: ({ position }: StylesProps) => position
     },
     progress: {
-        color: ({ color }: StylesProps) => theme.palette[color].main,
+        color: ({ color }: StylesProps) => (color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main),
         padding: '.8rem',
         width: '4rem !important',
         height: '4rem !important'

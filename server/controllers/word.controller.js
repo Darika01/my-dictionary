@@ -31,7 +31,6 @@ const createWord = (req, res) => {
     if (body.wordType === 'word') body.text = body.text.charAt(0).toLowerCase() + body.text.slice(1);
     if (!body) {
         return res.status(400).json({
-            // success: false,
             error: 'You must provide a word'
         });
     }
@@ -52,13 +51,12 @@ const createWord = (req, res) => {
     getTranslation(body.text, body.langTo).then(translationRes => {
         if (translationRes.success) {
             const { langFrom, translatedText } = translationRes.res;
-
             wd.getDef(body.text, langFrom, { exact: false }, definitionRes => {
                 const data = {
                     [langFrom]: body.text,
                     [body.langTo]: translatedText,
                     wordType: body.wordType,
-                    definition: definitionRes?.definition ?? null,
+                    definition: body.definition ? body.definition : definitionRes?.definition ?? null,
                     category: definitionRes?.category ?? null
                 };
 
@@ -113,19 +111,20 @@ const updateWord = async (req, res) => {
                 message: 'Word not found!'
             });
         }
-        word.name = body.name;
-        // word.time = body.time;
-        // word.rating = body.rating;
+        word.pl = body.pl;
+        word.en = body.en;
+        word.definition = body.definition;
+        word.category = body.category;
+        word.wordType = body.wordType;
         word.save()
             .then(() => {
                 return res.status(200).json({
-                    success: true,
                     id: word._id,
                     message: 'Word updated!'
                 });
             })
             .catch(error => {
-                return res.status(404).json({
+                return res.status(500).json({
                     error,
                     message: 'Word not updated!'
                 });

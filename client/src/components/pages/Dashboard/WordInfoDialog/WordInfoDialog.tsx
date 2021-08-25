@@ -1,5 +1,3 @@
-import clsx from 'clsx';
-
 import {
     Avatar,
     Dialog,
@@ -27,11 +25,7 @@ const WordInfoDialog: React.FC<WordInfoDialogProps> = ({ detailsData, onCloseDia
                 {Object.entries(detailsData).map(([dataKey, dataValue]: any) => {
                     if (dataKey === 'word') {
                         return (
-                            <Typography
-                                key={dataKey}
-                                variant="body2"
-                                className={clsx(classes.wordDef, classes.wordDefContainer)}
-                            >
+                            <Typography key={dataKey} variant="body2" className={classes.wordDefContainer}>
                                 {dataValue.definition}
                             </Typography>
                         );

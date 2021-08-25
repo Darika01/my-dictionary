@@ -3,11 +3,11 @@ import CircularLoader from 'components/atoms/CircularLoader';
 
 import { Button, ButtonBaseProps, SvgIconProps } from '@material-ui/core';
 
-import { useStyles } from './styles';
+import { colorTYPE, useStyles } from './styles';
 
 interface RectangularButtonProps extends ButtonBaseProps {
     tooltipTitle?: string;
-    color?: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
+    color?: colorTYPE;
     text: string;
     type?: 'button' | 'reset' | 'submit';
     variant?: 'text' | 'outlined' | 'contained';

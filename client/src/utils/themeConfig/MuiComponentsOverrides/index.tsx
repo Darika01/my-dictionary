@@ -1,6 +1,7 @@
 import buttonStyles from './buttonStyles';
 import chipStyles from './chipStyles';
 import dialogStyles from './dialogStyles';
+import dividerStyles from './dividerStyles';
 import fabStyles from './fabStyles';
 import inputStyles from './inputStyles';
 import linkStyles from './linkStyles';
@@ -29,6 +30,7 @@ const overrides = {
     ...toolbarStyles,
     ...listStyles,
     ...chipStyles,
-    ...linkStyles
+    ...linkStyles,
+    ...dividerStyles
 };
 export default overrides;

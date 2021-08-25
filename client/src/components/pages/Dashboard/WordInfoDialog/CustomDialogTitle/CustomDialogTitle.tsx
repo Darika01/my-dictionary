@@ -1,4 +1,5 @@
 import RoundButton from 'components/atoms/buttons/RoundButton';
+import GoogleTranslateLink from 'components/atoms/GoogleTranslateLink';
 
 import { DialogTitle, Typography } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
@@ -15,9 +16,11 @@ const CustomDialogTitle: React.FC<CustomDialogTitleProps> = ({ title, onCloseDia
     return (
         <DialogTitle disableTypography className={classes.title}>
             <div>
-                <Typography variant="subtitle1" component="span" color="secondary">
-                    {title.en + ' - '}
-                </Typography>
+                <GoogleTranslateLink value={title.en}>
+                    <Typography variant="subtitle1" component="span" color="secondary">
+                        {title.en + ' - '}
+                    </Typography>
+                </GoogleTranslateLink>
                 <Typography variant="body1" component="span">
                     {title.pl}
                 </Typography>
