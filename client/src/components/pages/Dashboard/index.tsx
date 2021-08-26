@@ -3,11 +3,13 @@ import { useEffect, useState } from 'react';
 import API from 'api';
 import RectangularButton from 'components/atoms/buttons/RectangularButton';
 import BackdropLoader from 'components/molecules/BackdropLoader';
+import InfoSnackbar, { SnackbarVariantTYPE } from 'components/molecules/InfoSnackbar';
 import FormikInput from 'components/molecules/textfields/FormikInput';
 import FormikSelect from 'components/molecules/textfields/FormikSelect';
 import CustomTable from 'components/organisms/CustomTable';
 import { Form, Formik } from 'formik';
 import moment from 'moment';
+import { worDataTYPE } from 'utils/types';
 import * as Yup from 'yup';
 
 import { Save } from '@material-ui/icons';
@@ -23,21 +25,18 @@ type dataTYPE = {
     definition?: string;
 };
 
-export type worDataTYPE = {
-    category: string;
-    createdAt: string;
+export type googleTranslateWordDataDefinitionTYPE = {
     definition: string;
-    en: string;
-    id: string;
-    pl: string;
-    updatedAt: string;
-    wordType: string;
+    example: string;
+    synonyms: string[] | [];
+    antonyms: string[] | [];
 };
 export type googleTranslateWordDataTYPE = {
-    definition: string;
-    example?: string;
-    synonyms?: string[];
+    partOfSpeech: string;
+    definitions: googleTranslateWordDataDefinitionTYPE[];
 };
+
+export const setErrorMes = (code: number, message: string) => 'Error ' + code + '. ' + message;
 
 const Dashboard: React.FC = () => {
     const classes = useStyles();
@@ -55,6 +54,8 @@ const Dashboard: React.FC = () => {
 
     const [Loading, setLoading] = useState(false);
 
+    const [SnackbarData, setSnackbarData] = useState<{ title: string; variant: SnackbarVariantTYPE } | null>(null);
+
     const getData = () => {
         setLoading(true);
         API.get('words')
@@ -70,6 +71,10 @@ const Dashboard: React.FC = () => {
             .catch(err => {
                 console.log(err);
                 setLoading(false);
+                setSnackbarData({
+                    title: setErrorMes(err.code, err.message),
+                    variant: 'error'
+                });
             });
     };
 
@@ -77,6 +82,7 @@ const Dashboard: React.FC = () => {
 
     useEffect(() => {
         getData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const postData = async ({ word, wordType, definition }: dataTYPE, { resetForm }: any) => {
@@ -87,22 +93,43 @@ const Dashboard: React.FC = () => {
             definition: definition,
             langTo: 'pl'
         })
-            .then(() => {
+            .then(res => {
+                console.log(res);
                 getData();
                 resetForm();
+                setSnackbarData({
+                    title: 'Word ' + res.data.data.en + ' added',
+                    variant: 'success'
+                });
             })
             .catch(err => {
                 console.log(err);
+                setSnackbarData({
+                    title: setErrorMes(err.response.status, err.message),
+                    variant: 'error'
+                });
             });
     };
 
     const deleteWord = async ({ id }: any) => {
+        setLoading(true);
         // await new Promise(resolve => setTimeout(resolve, 1500));
         API.delete(`word/${id}`)
-            .then(() => {
+            .then(res => {
                 getData();
+                setSnackbarData({
+                    title: 'Word ' + res.data.data.en + ' deleted',
+                    variant: 'success'
+                });
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.log(err);
+                setLoading(false);
+                setSnackbarData({
+                    title: setErrorMes(err.response.status, err.message),
+                    variant: 'error'
+                });
+            });
     };
     const detailsWord = async ({ id }: any) => {
         setLoading(true);
@@ -115,6 +142,10 @@ const Dashboard: React.FC = () => {
             .catch(err => {
                 console.log(err);
                 setLoading(false);
+                setSnackbarData({
+                    title: setErrorMes(err.response.status, err.message),
+                    variant: 'error'
+                });
             });
     };
 
@@ -179,7 +210,16 @@ const Dashboard: React.FC = () => {
                 onDelete={deleteWord}
             />
             {DetailsData && <WordInfoDialog detailsData={DetailsData} onCloseDialog={() => setDetailsData(null)} />}
-            {EditData && <WordEditDialog data={EditData} onCloseDialog={closeEditDialog} />}
+            {EditData && (
+                <WordEditDialog data={EditData} onCloseDialog={closeEditDialog} setSnackbarData={setSnackbarData} />
+            )}
+            {SnackbarData && (
+                <InfoSnackbar
+                    title={SnackbarData.title}
+                    variant={SnackbarData.variant}
+                    onClose={() => setSnackbarData(null)}
+                />
+            )}
         </div>
     );
 };

@@ -1,10 +1,10 @@
 import RoundButton from 'components/atoms/buttons/RoundButton';
 import GoogleTranslateLink from 'components/atoms/GoogleTranslateLink';
+import { worDataTYPE } from 'utils/types';
 
 import { DialogTitle, Typography } from '@material-ui/core';
 import { Close } from '@material-ui/icons';
 
-import { worDataTYPE } from '../../';
 import useStyles from './styles';
 
 interface CustomDialogTitleProps {

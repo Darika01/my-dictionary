@@ -7,12 +7,9 @@ export const useStyles = makeStyles(theme => ({
     wordDefContainer: {
         '&:not(:last-child)': { marginBottom: '4rem' }
     },
-    wordDefContent: {
-        '&:not(:last-child)': { marginBottom: '3.2rem' }
-    },
     googleWordDef: {
         display: 'flex',
-        marginTop: '1.6rem'
+        marginTop: '3.2rem'
     },
     avatar: {
         marginRight: '3.2rem',
@@ -25,7 +22,7 @@ export const useStyles = makeStyles(theme => ({
     googleDefSingleInfo: {
         display: 'flex',
         flexDirection: 'column',
-        '& > div:last-child': { marginTop: '2rem' }
+        '& > div': { marginTop: '2rem' }
     }
 }));
 
