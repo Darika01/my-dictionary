@@ -16,14 +16,25 @@ const CustomDialogTitle: React.FC<CustomDialogTitleProps> = ({ title, onCloseDia
     return (
         <DialogTitle disableTypography className={classes.title}>
             <div>
-                <GoogleTranslateLink value={title.en}>
-                    <Typography variant="subtitle1" component="span" color="secondary">
-                        {title.en + ' - '}
-                    </Typography>
-                </GoogleTranslateLink>
-                <Typography variant="body1" component="span">
-                    {title.pl}
-                </Typography>
+                {title.wordType === 'word' ? (
+                    <>
+                        <GoogleTranslateLink value={title.en}>
+                            <Typography variant="subtitle1" component="span" color="secondary">
+                                {title.en}
+                            </Typography>
+                        </GoogleTranslateLink>
+                        <Typography variant="caption">&nbsp; [{title.phonetic}] -&nbsp;</Typography>
+                        <Typography variant="body1" component="span">
+                            {title.pl}
+                        </Typography>
+                    </>
+                ) : (
+                    <GoogleTranslateLink value={title.en}>
+                        <Typography variant="subtitle1" component="span" color="primary">
+                            Translation
+                        </Typography>
+                    </GoogleTranslateLink>
+                )}
             </div>
             <RoundButton handleClick={onCloseDialog} tooltipTitle="Close">
                 <Close />

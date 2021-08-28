@@ -44,7 +44,6 @@ const FormikSelect: React.FC<FormikSelectI> = ({
                 variant={variant}
                 disabled={disabled}
                 onChange={(event: React.BaseSyntheticEvent) => {
-                    console.log(event.target);
                     setFieldValue(name, event.target.value);
                     // if (!newValue) setTouched({ ...touched, [name]: true });
                 }}

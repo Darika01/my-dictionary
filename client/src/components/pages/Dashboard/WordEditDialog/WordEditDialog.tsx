@@ -57,9 +57,9 @@ const WordEditDialog: React.FC<WordEditDialogProps> = ({ data, onCloseDialog, se
 
     const validationSchema = Yup.object().shape({
         pl: Yup.string().required('This field is required'),
-        wordType: Yup.string().required('This field is required'),
+        wordType: Yup.string().required('This field is required')
         // category: Yup.string().required('This field is required'),
-        definition: Yup.string().required('This field is required')
+        // definition: Yup.string().required('This field is required')
     });
 
     return (

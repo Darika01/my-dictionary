@@ -7,6 +7,8 @@ const Word = new Schema(
         en: { type: String, required: true },
         definition: { type: String, required: false },
         category: { type: String, required: false },
+        phonetic: { type: String, required: false },
+        phoneticAudio: { type: String, required: false },
         wordType: { type: String, enum: ['word', 'phrase', 'sentence'], required: true }
     },
     { timestamps: true }

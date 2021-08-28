@@ -8,10 +8,12 @@ import FormikInput from 'components/molecules/textfields/FormikInput';
 import FormikSelect from 'components/molecules/textfields/FormikSelect';
 import CustomTable from 'components/organisms/CustomTable';
 import { Form, Formik } from 'formik';
+import _ from 'lodash';
 import moment from 'moment';
 import { worDataTYPE } from 'utils/types';
 import * as Yup from 'yup';
 
+import { Typography } from '@material-ui/core';
 import { Save } from '@material-ui/icons';
 
 import useStyles from './styles';
@@ -43,12 +45,15 @@ const Dashboard: React.FC = () => {
     const columns = [
         { title: 'EN', value: 'en' },
         { title: 'PL', value: 'pl' },
+        // { title: 'Phonetic', value: 'phonetic' },
         { title: 'Definition', value: 'definition', cellSize: 'small' },
         { title: 'Category', value: 'category', cellSize: 'small' },
         { title: 'Word type', value: 'wordType', cellSize: 'small' },
         { title: 'Date', value: 'updatedAt', cellSize: 'small' }
     ];
 
+    const [Data, setData] = useState<worDataTYPE[]>([]);
+    const [TableData, setTableData] = useState([]);
     const [DetailsData, setDetailsData] = useState<any>(null);
     const [EditData, setEditData] = useState<worDataTYPE | null>(null);
 
@@ -60,9 +65,22 @@ const Dashboard: React.FC = () => {
         setLoading(true);
         API.get('words')
             .then(res => {
-                setData(
-                    res.data.map((el: worDataTYPE) => {
+                setData(res.data);
+                const data = _.cloneDeep(res.data);
+                setTableData(
+                    data.map((el: any) => {
                         el.updatedAt = moment(el.updatedAt).format('DD-MM-YYYY');
+                        el.en = (
+                            <>
+                                {el.en}
+                                {el.phonetic && (
+                                    <Typography variant="caption" component="p">
+                                        [{el.phonetic}]
+                                    </Typography>
+                                )}
+                            </>
+                        );
+                        el.isAudio = Boolean(el.phoneticAudio);
                         return el;
                     })
                 );
@@ -78,8 +96,6 @@ const Dashboard: React.FC = () => {
             });
     };
 
-    const [Data, setData] = useState([]);
-
     useEffect(() => {
         getData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -94,7 +110,6 @@ const Dashboard: React.FC = () => {
             langTo: 'pl'
         })
             .then(res => {
-                console.log(res);
                 getData();
                 resetForm();
                 setSnackbarData({
@@ -164,6 +179,21 @@ const Dashboard: React.FC = () => {
         if (shouldUpdateTableData) getData();
     };
 
+    const onPlayAudio = ({ phoneticAudio }: worDataTYPE) => {
+        phoneticAudio && new Audio(phoneticAudio).play();
+    };
+
+    const onEditData = (row: any) => {
+        const dataRow = Data.find(el => el.id === row.id);
+        if (dataRow) {
+            Object.keys(dataRow as any).forEach((key: any) => {
+                // @ts-ignore
+                if (dataRow[key] === null) dataRow[key] = '';
+            });
+            setEditData(dataRow);
+        }
+    };
+
     return (
         <div>
             {Loading && <BackdropLoader />}
@@ -204,10 +234,11 @@ const Dashboard: React.FC = () => {
             </Formik>
             <CustomTable
                 columns={columns}
-                data={Data}
+                data={TableData}
                 onDetails={detailsWord}
-                onEdit={(row: worDataTYPE) => setEditData(row)}
+                onEdit={onEditData}
                 onDelete={deleteWord}
+                onPlayAudio={onPlayAudio}
             />
             {DetailsData && <WordInfoDialog detailsData={DetailsData} onCloseDialog={() => setDetailsData(null)} />}
             {EditData && (

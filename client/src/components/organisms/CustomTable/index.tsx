@@ -10,7 +10,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { Create, Delete, Info } from '@material-ui/icons';
+import { Create, Delete, Info, PlayCircleFilled } from '@material-ui/icons';
 
 import useStyles from './styles';
 
@@ -33,26 +33,27 @@ interface CustomTableI<TRow extends Record<string, any>> {
     onEdit?: (rowData: TRow) => void;
     onDelete?: (rowData: TRow) => void;
     onRefresh?: () => void;
+    onPlayAudio?: (rowData: TRow) => void;
 }
 
 const CustomTable: <TRow extends Record<string, any>>(props: CustomTableI<TRow>) => JSX.Element = ({
     data = [],
     columns,
-    emptyMessage = 'No data available',
-    errorMessage,
-    loading,
     onDetails,
-    onRowClick,
-    onCancel,
-    onRefresh,
+    onPlayAudio,
     onEdit,
     onDelete
 }) => {
     const classes = useStyles();
     const tableRef = useRef<HTMLDivElement>();
+
     replaceNullByValue(data, '-');
 
-    const isActions = typeof onDetails === 'function' || typeof onDelete === 'function' || typeof onEdit === 'function';
+    const isActions =
+        typeof onDetails === 'function' ||
+        typeof onDelete === 'function' ||
+        typeof onEdit === 'function' ||
+        typeof onPlayAudio === 'function';
 
     const sortedData = data.map(row => {
         return Object.entries(row)
@@ -113,6 +114,11 @@ const CustomTable: <TRow extends Record<string, any>>(props: CustomTableI<TRow>)
                                     {isActions && (
                                         <TableCell component="th" align="right">
                                             <div className={classes.actions}>
+                                                {typeof onPlayAudio === 'function' && row.isAudio && (
+                                                    <RoundButton size="small" handleClick={() => onPlayAudio(row)}>
+                                                        <PlayCircleFilled />
+                                                    </RoundButton>
+                                                )}
                                                 {typeof onDetails === 'function' && (
                                                     <RoundButton size="small" handleClick={() => onDetails(row)}>
                                                         <Info />

@@ -15,54 +15,62 @@ const createWord = (req, res) => {
 
     const googleDictionaryApi = getGoogleTranslateApi(body.text);
 
-    axios
-        .get(googleDictionaryApi)
-        .then(googleRes => {
-            translate(body.text, { to: body.langTo })
-                .then(translationRes => {
-                    const data = {
-                        // [translationRes.from.language.iso.langFrom]: body.text,
-                        en: body.text,
-                        [body.langTo]: translationRes.text,
-                        wordType: body.wordType,
-                        definition: body.definition
-                            ? body.definition
-                            : googleRes.data[0].meanings[0].definitions[0].definition ?? null,
-                        category: googleRes.data[0].meanings[0].partOfSpeech ?? null
-                    };
+    const translateWord = (body, googleRes) => {
+        translate(body.text, { to: body.langTo })
+            .then(translationRes => {
+                const data = {
+                    // [translationRes.from.language.iso.langFrom]: body.text,
+                    en: body.text,
+                    [body.langTo]: translationRes.text.charAt(0).toLowerCase() + translationRes.text.slice(1),
+                    wordType: body.wordType,
+                    definition: body.definition
+                        ? body.definition
+                        : googleRes?.data[0].meanings[0].definitions[0].definition ?? null,
+                    category: googleRes?.data[0].meanings[0].partOfSpeech ?? null,
+                    phonetic: googleRes?.data[0].phonetic ?? null,
+                    phoneticAudio: googleRes?.data[0].phonetics[0].audio ?? null
+                };
 
-                    const word = new Word(data);
+                const word = new Word(data);
 
-                    if (!word) {
-                        return res.status(400).json({
-                            message: 'Schema error'
-                        });
-                    }
-
-                    word.save()
-                        .then(() => {
-                            return res.status(201).json({
-                                message: 'Word added',
-                                data: word
-                            });
-                        })
-                        .catch(err => {
-                            return res.status(400).json(err);
-                        });
-                })
-                .catch(translationError => {
-                    return res.status(translationError.code ?? 500).json({
-                        message: translationError.message ?? 'Translation error. Word not added',
-                        ...translationError
+                if (!word) {
+                    return res.status(400).json({
+                        message: 'Schema error'
                     });
+                }
+
+                word.save()
+                    .then(() => {
+                        return res.status(201).json({
+                            message: 'Word added',
+                            data: word
+                        });
+                    })
+                    .catch(err => {
+                        return res.status(400).json(err);
+                    });
+            })
+            .catch(translationError => {
+                return res.status(translationError.code ?? 500).json({
+                    message: translationError.message ?? 'Translation error. Word not added',
+                    ...translationError
                 });
-        })
-        .catch(googleError => {
-            return res.status(404).json({
-                code: 404,
-                message: 'Google definition error. Word not added'
             });
-        });
+    };
+
+    if (body.wordType === 'word')
+        axios
+            .get(googleDictionaryApi)
+            .then(googleRes => {
+                translateWord(body, googleRes);
+            })
+            .catch(googleError => {
+                return res.status(404).json({
+                    code: 404,
+                    message: 'Google definition error. Word not added'
+                });
+            });
+    else translateWord(body);
 
     // Word.findOne({ en: body.text }, (err, word) => {
     //     if (word) {
