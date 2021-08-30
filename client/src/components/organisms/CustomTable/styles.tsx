@@ -8,6 +8,10 @@ export const useStyles = makeStyles(() => ({
     actions: {
         display: 'flex',
         justifyContent: 'flex-end'
+    },
+    visibilityOff: {
+        textShadow: '0px 0px 1.2rem #4c4b4b',
+        color: 'transparent'
     }
 }));
 

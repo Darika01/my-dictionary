@@ -6,7 +6,7 @@ import {
     Typography
 } from '@material-ui/core';
 
-import { googleTranslateWordDataDefinitionTYPE, googleTranslateWordDataTYPE } from '../';
+import { googleTranslateWordDataDefinitionTYPE, googleTranslateWordDataTYPE } from '../dashboardHelpers';
 import CustomChips from './CustomChips/CustomChips';
 import CustomDialogTitle from './CustomDialogTitle/CustomDialogTitle';
 import useStyles from './styles';

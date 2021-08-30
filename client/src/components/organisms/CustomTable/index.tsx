@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import RoundButton from 'components/atoms/buttons/RoundButton';
 import { replaceNullByValue } from 'utils/replaceNullByValue';
@@ -10,7 +10,14 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { Create, Delete, Info, PlayCircleFilled } from '@material-ui/icons';
+import {
+    Create,
+    Delete,
+    Info,
+    PlayCircleFilled,
+    Visibility,
+    VisibilityOff
+} from '@material-ui/icons';
 
 import useStyles from './styles';
 
@@ -34,6 +41,7 @@ interface CustomTableI<TRow extends Record<string, any>> {
     onDelete?: (rowData: TRow) => void;
     onRefresh?: () => void;
     onPlayAudio?: (rowData: TRow) => void;
+    visibilityCol?: string;
 }
 
 const CustomTable: <TRow extends Record<string, any>>(props: CustomTableI<TRow>) => JSX.Element = ({
@@ -42,10 +50,20 @@ const CustomTable: <TRow extends Record<string, any>>(props: CustomTableI<TRow>)
     onDetails,
     onPlayAudio,
     onEdit,
-    onDelete
+    onDelete,
+    visibilityCol
 }) => {
     const classes = useStyles();
     const tableRef = useRef<HTMLDivElement>();
+    const [ItemVisibility, setItemVisibility] = useState<{ [k: string]: boolean }>({});
+
+    useEffect(() => {
+        setItemVisibility({
+            ...ItemVisibility,
+            [data[0]?.id]: true
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data]);
 
     replaceNullByValue(data, '-');
 
@@ -73,6 +91,19 @@ const CustomTable: <TRow extends Record<string, any>>(props: CustomTableI<TRow>)
             );
     });
 
+    const setAllVisible = () => {
+        const allVisible = Object.values(ItemVisibility).find(val => val);
+        allVisible
+            ? setItemVisibility({})
+            : setItemVisibility(() => {
+                  const items: { [k: string]: boolean } = {};
+                  sortedData.forEach((el: any) => {
+                      items[el.id] = true;
+                  });
+                  return { ...items };
+              });
+    };
+
     return (
         <TableContainer
             component={Paper}
@@ -83,6 +114,22 @@ const CustomTable: <TRow extends Record<string, any>>(props: CustomTableI<TRow>)
                 <TableHead>
                     <TableRow>
                         <>
+                            <TableCell align="left">
+                                {sortedData.length > 0 ? (
+                                    <RoundButton size="small" handleClick={setAllVisible}>
+                                        {Object.keys(ItemVisibility).some(key => {
+                                            const row = sortedData.find((row: any) => row.id === key);
+
+                                            // @ts-ignore
+                                            return row ? ItemVisibility[row.id] : false;
+                                        }) ? (
+                                            <Visibility />
+                                        ) : (
+                                            <VisibilityOff />
+                                        )}
+                                    </RoundButton>
+                                ) : null}
+                            </TableCell>
                             {columns.map((column: ColumnTYPE) => (
                                 <TableCell key={column.title}>{column.title}</TableCell>
                             ))}
@@ -95,6 +142,19 @@ const CustomTable: <TRow extends Record<string, any>>(props: CustomTableI<TRow>)
                         {sortedData.map((row: any, id: number) => (
                             <TableRow key={id}>
                                 <>
+                                    <TableCell component="th" align="left">
+                                        <RoundButton
+                                            size="small"
+                                            handleClick={() =>
+                                                setItemVisibility({
+                                                    ...ItemVisibility,
+                                                    [row.id]: !ItemVisibility[row.id]
+                                                })
+                                            }
+                                        >
+                                            {ItemVisibility[row.id] ? <Visibility /> : <VisibilityOff />}
+                                        </RoundButton>
+                                    </TableCell>
                                     {Object.entries(row).map(
                                         ([cellKey, cellValue]: any) =>
                                             columns.find(column => column.value === cellKey) && (
@@ -105,6 +165,11 @@ const CustomTable: <TRow extends Record<string, any>>(props: CustomTableI<TRow>)
                                                     size={
                                                         columns.find(column => column.value === cellKey)?.cellSize ??
                                                         'medium'
+                                                    }
+                                                    className={
+                                                        !ItemVisibility[row.id] && cellKey === visibilityCol
+                                                            ? classes.visibilityOff
+                                                            : ''
                                                     }
                                                 >
                                                     {cellValue}

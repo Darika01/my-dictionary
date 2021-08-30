@@ -37,6 +37,26 @@ const buttonStyles = {
             marginLeft: '.8rem',
             marginRight: '0'
         }
+    },
+    MuiSwitch: {
+        root: {
+            width: '5.8rem',
+            height: '3.8rem',
+            padding: '1.2rem'
+        },
+        switchBase: {
+            padding: '.9rem',
+            '&.Mui-checked': {
+                transform: 'translateX(2rem)'
+            }
+        },
+        thumb: {
+            width: '2rem',
+            height: '2rem'
+        },
+        track: {
+            borderRadius: '.7rem'
+        }
     }
 };
 export default buttonStyles;

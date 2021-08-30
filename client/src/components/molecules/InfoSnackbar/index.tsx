@@ -6,11 +6,14 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Close from '@material-ui/icons/Close';
 import Alert from '@material-ui/lab/Alert';
 
-export type SnackbarVariantTYPE = 'error' | 'info' | 'success' | 'warning';
+type SnackbarVariantTYPE = 'error' | 'info' | 'success' | 'warning';
 
-interface InfoSnackbarProps {
+export type SnackbarTYPE = {
     title: string;
     variant: SnackbarVariantTYPE;
+};
+
+interface InfoSnackbarProps extends SnackbarTYPE {
     onClose: () => void;
 }
 const InfoSnackbar: React.FC<InfoSnackbarProps> = ({ title, variant, onClose }) => {

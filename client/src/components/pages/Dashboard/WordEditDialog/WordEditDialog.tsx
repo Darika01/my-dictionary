@@ -1,7 +1,7 @@
 import API from 'api';
 import RectangularButton from 'components/atoms/buttons/RectangularButton';
 import GoogleTranslateLink from 'components/atoms/GoogleTranslateLink';
-import { SnackbarVariantTYPE } from 'components/molecules/InfoSnackbar';
+import { SnackbarTYPE } from 'components/molecules/InfoSnackbar';
 import FormikInput from 'components/molecules/textfields/FormikInput';
 import FormikSelect from 'components/molecules/textfields/FormikSelect';
 import { Form, Formik } from 'formik';
@@ -17,13 +17,13 @@ import {
 } from '@material-ui/core';
 import { Close, Save } from '@material-ui/icons';
 
-import { setErrorMes } from '../';
+import { setErrorMes } from '../dashboardHelpers';
 import useStyles from './styles';
 
 interface WordEditDialogProps {
     data: worDataTYPE;
     onCloseDialog: (shouldUpdateTableData: boolean) => void;
-    setSnackbarData: ({ title, variant }: { title: string; variant: SnackbarVariantTYPE }) => void;
+    setSnackbarData: ({ title, variant }: SnackbarTYPE) => void;
 }
 
 const WordEditDialog: React.FC<WordEditDialogProps> = ({ data, onCloseDialog, setSnackbarData }) => {
