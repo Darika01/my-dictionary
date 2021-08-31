@@ -25,7 +25,7 @@ const typography = {
     },
     subtitle1: {
         fontWeight: 400,
-        fontSize: '1.6rem',
+        fontSize: '1.8rem',
         lineHeight: 1.37,
         letterSpacing: '0.015rem'
     },

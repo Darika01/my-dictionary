@@ -6,9 +6,10 @@ export interface FormikInputProps extends FormikValues {
     name: string;
     label: string;
     type?: string;
+    fullWidth?: boolean;
 }
 
-const FormikInput: React.FC<FormikInputProps> = ({ formik, name, label, type = 'text' }) => {
+const FormikInput: React.FC<FormikInputProps> = ({ formik, name, label, type = 'text', fullWidth }) => {
     const { isSubmitting, isValid } = formik;
 
     // const error = Boolean(errors[name] && touched[name]);
@@ -35,6 +36,7 @@ const FormikInput: React.FC<FormikInputProps> = ({ formik, name, label, type = '
                         onSubmit();
                     }
                 }}
+                fullWidth={fullWidth}
             />
             {/* {error && <FormHelperText error>{errors[name]}</FormHelperText>} */}
         </div>

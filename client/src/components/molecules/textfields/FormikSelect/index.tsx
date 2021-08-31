@@ -44,7 +44,6 @@ const FormikSelect: React.FC<FormikSelectI> = ({
                 variant={variant}
                 disabled={disabled}
                 onChange={(event: React.BaseSyntheticEvent) => {
-                    console.log(event.target);
                     setFieldValue(name, event.target.value);
                     // if (!newValue) setTouched({ ...touched, [name]: true });
                 }}
@@ -66,10 +65,11 @@ const FormikSelect: React.FC<FormikSelectI> = ({
                             list: clsx('mainInputSelect', disabled && 'inputBlockedValue'),
                             paper: 'selectPaper'
                         },
-                        onExit: () => setSelectIconMenuOpened(false),
-                        onEnter: () => setSelectIconMenuOpened(true)
-                    },
-                    fullWidth: true
+                        TransitionProps: {
+                            onExit: () => setSelectIconMenuOpened(false),
+                            onEnter: () => setSelectIconMenuOpened(true)
+                        }
+                    }
                 }}
             >
                 {options !== null &&
