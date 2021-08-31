@@ -1,21 +1,21 @@
 import API from 'api';
 import { SnackbarTYPE } from 'components/molecules/InfoSnackbar';
 
-import { formDataTYPE, setErrorMes } from '../dashboardHelpers';
+import { formDataTYPE, setErrorMes } from '../enDictHelpers';
 
 const useAddingWordForm = (getData: () => void, setSnackbarData: (data: SnackbarTYPE) => void) => {
-    const postData = async ({ word, wordType, definition }: formDataTYPE, { resetForm }: any) => {
-        await API.post('word', {
-            text: word,
+    const postData = async ({ wordText, wordType, definition }: formDataTYPE, { resetForm }: any) => {
+        await API.post('en-pl/word', {
+            wordText: wordText,
             wordType: wordType,
             definition: definition,
-            langTo: 'pl'
+            translationLang: 'pl'
         })
             .then(res => {
                 getData();
                 resetForm();
                 setSnackbarData({
-                    title: 'Word ' + res.data.data.en + ' added',
+                    title: 'Word ' + res.data.data.word.text + ' added',
                     variant: 'success'
                 });
             })

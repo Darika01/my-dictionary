@@ -1,3 +1,6 @@
+import Dashboard from 'components/pages/Dashboard';
+import EnDict from 'components/pages/EnDict';
+import PlRuDict from 'components/pages/PlRuDict';
 import {
     BrowserRouter as Router,
     Redirect,
@@ -9,7 +12,6 @@ import {
 import { ThemeProvider } from '@material-ui/core';
 
 import MainLayout from './components/layouts/MainLayout';
-import Dashboard from './components/pages/Dashboard';
 import PageNotFound from './components/pages/PageNotFound';
 import useStyles from './styles';
 import useRootFontStyles from './utils/rootFontStyles';
@@ -24,6 +26,8 @@ function App() {
                 <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
                 <Redirect exact from="/" to="/dashboard" />
                 <Route exact path="/dashboard" component={Dashboard} />
+                <Route exact path="/en-pl-dict" component={EnDict} />
+                <Route exact path="/pl-ru-dict" component={PlRuDict} />
                 <Route exact path="/404" component={PageNotFound} />
                 <Redirect to="/404" push={false} />
             </Switch>

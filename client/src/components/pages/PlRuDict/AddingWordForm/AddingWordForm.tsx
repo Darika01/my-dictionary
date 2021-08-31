@@ -6,7 +6,7 @@ import { Form, Formik } from 'formik';
 
 import { Save } from '@material-ui/icons';
 
-import { setInitErrors, setInitValues, validationSchema } from '../dashboardHelpers';
+import { setInitErrors, setInitValues, validationSchema } from '../plRuDictHelpers';
 import useAddingWordForm from './AddingWordForm.hook';
 import useStyles from './styles';
 
@@ -30,7 +30,7 @@ const AddingWordForm: React.FC<AddingWordFormProps> = ({ getData, setSnackbarDat
                 <Form className="formContainer">
                     <div className={classes.form}>
                         <div>
-                            <FormikInput name="word" label="Word" />
+                            <FormikInput name="wordText" label="Word" />
                             <FormikSelect
                                 name="wordType"
                                 label="Word type"
@@ -41,7 +41,6 @@ const AddingWordForm: React.FC<AddingWordFormProps> = ({ getData, setSnackbarDat
                                 ]}
                             />
                         </div>
-                        <FormikInput name="definition" label="Definition" fullWidth />
                     </div>
                     <div>
                         <RectangularButton

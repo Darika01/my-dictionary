@@ -17,7 +17,7 @@ import {
 } from '@material-ui/core';
 import { Close, Save } from '@material-ui/icons';
 
-import { setErrorMes } from '../dashboardHelpers';
+import { setErrorMes } from '../enDictHelpers';
 import useStyles from './styles';
 
 interface WordEditDialogProps {
@@ -30,16 +30,16 @@ const WordEditDialog: React.FC<WordEditDialogProps> = ({ data, onCloseDialog, se
     const classes = useStyles();
 
     const postData = async (data: worDataTYPE) => {
-        await API.put(`word/${data.id}`, {
-            pl: data.pl,
-            en: data.en,
+        await API.put(`en-pl/word/${data.id}`, {
+            wordText: data.word.text,
+            translationText: data.translation.text,
             wordType: data.wordType,
             definition: data.definition,
             category: data.category ? data.category : null
         })
             .then(res => {
                 setSnackbarData({
-                    title: 'Word ' + res.data.data.en + ' saved',
+                    title: 'Word ' + res.data.data.word.text + ' saved',
                     variant: 'success'
                 });
                 setTimeout(() => {
@@ -56,7 +56,9 @@ const WordEditDialog: React.FC<WordEditDialogProps> = ({ data, onCloseDialog, se
     };
 
     const validationSchema = Yup.object().shape({
-        pl: Yup.string().required('This field is required'),
+        translation: Yup.object().shape({
+            text: Yup.string().required('This field is required')
+        }),
         wordType: Yup.string().required('This field is required')
         // category: Yup.string().required('This field is required'),
         // definition: Yup.string().required('This field is required')
@@ -70,9 +72,9 @@ const WordEditDialog: React.FC<WordEditDialogProps> = ({ data, onCloseDialog, se
                         <Typography variant="subtitle1" component="span">
                             Editing word
                         </Typography>
-                        <GoogleTranslateLink value={data.en}>
+                        <GoogleTranslateLink value={data.word.text}>
                             <Typography variant="subtitle1" component="span" color="secondary">
-                                {' ' + data.en}
+                                {' ' + data.word.text}
                             </Typography>
                         </GoogleTranslateLink>
                     </div>
@@ -89,7 +91,7 @@ const WordEditDialog: React.FC<WordEditDialogProps> = ({ data, onCloseDialog, se
                             <Form className={classes.formContainer}>
                                 <div className={classes.form}>
                                     <div>
-                                        <FormikInput name="pl" label="Translation" />
+                                        <FormikInput name="translation.text" label="Translation" />
                                         <FormikSelect
                                             name="wordType"
                                             label="Word type"

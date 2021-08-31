@@ -18,18 +18,18 @@ const CustomDialogTitle: React.FC<CustomDialogTitleProps> = ({ title, onCloseDia
             <div>
                 {title.wordType === 'word' ? (
                     <>
-                        <GoogleTranslateLink value={title.en}>
+                        <GoogleTranslateLink value={title.word.text}>
                             <Typography variant="subtitle1" component="span" color="secondary">
-                                {title.en}
+                                {title.word.text}
                             </Typography>
                         </GoogleTranslateLink>
                         <Typography variant="caption">&nbsp; [{title.phonetic}] -&nbsp;</Typography>
                         <Typography variant="body1" component="span">
-                            {title.pl}
+                            {title.translation.text}
                         </Typography>
                     </>
                 ) : (
-                    <GoogleTranslateLink value={title.en}>
+                    <GoogleTranslateLink value={title.word.text}>
                         <Typography variant="subtitle1" component="span" color="primary">
                             Translation
                         </Typography>

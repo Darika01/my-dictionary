@@ -58,10 +58,11 @@ const CustomTable: <TRow extends Record<string, any>>(props: CustomTableI<TRow>)
     const [ItemVisibility, setItemVisibility] = useState<{ [k: string]: boolean }>({});
 
     useEffect(() => {
-        setItemVisibility({
-            ...ItemVisibility,
-            [data[0]?.id]: true
-        });
+        data.length > 0 &&
+            setItemVisibility({
+                ...ItemVisibility,
+                [data[0]?.id]: true
+            });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
@@ -155,8 +156,14 @@ const CustomTable: <TRow extends Record<string, any>>(props: CustomTableI<TRow>)
                                             {ItemVisibility[row.id] ? <Visibility /> : <VisibilityOff />}
                                         </RoundButton>
                                     </TableCell>
-                                    {Object.entries(row).map(
-                                        ([cellKey, cellValue]: any) =>
+                                    {Object.entries(row).map(([cellKey, cellValue]: any) => {
+                                        // console.log(
+                                        //     ' cellKey, cellValue, :>> ',
+                                        //     cellKey,
+                                        //     cellValue,
+                                        //     columns.find(column => column.value === cellKey)
+                                        // );
+                                        return (
                                             columns.find(column => column.value === cellKey) && (
                                                 <TableCell
                                                     key={cellKey}
@@ -175,7 +182,8 @@ const CustomTable: <TRow extends Record<string, any>>(props: CustomTableI<TRow>)
                                                     {cellValue}
                                                 </TableCell>
                                             )
-                                    )}
+                                        );
+                                    })}
                                     {isActions && (
                                         <TableCell component="th" align="right">
                                             <div className={classes.actions}>

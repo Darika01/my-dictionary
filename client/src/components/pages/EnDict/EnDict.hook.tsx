@@ -8,9 +8,9 @@ import { worDataTYPE } from 'utils/types';
 
 import { Typography } from '@material-ui/core';
 
-import { setErrorMes } from './dashboardHelpers';
+import { setErrorMes } from './enDictHelpers';
 
-function useDashboard() {
+function useEnDict() {
     const [Data, setData] = useState<worDataTYPE[]>([]);
     const [TableData, setTableData] = useState([]);
     const [DetailsData, setDetailsData] = useState<any>(null);
@@ -22,16 +22,16 @@ function useDashboard() {
 
     const getData = () => {
         setLoading(true);
-        API.get('words')
+        API.get('en-pl/words')
             .then(res => {
                 setData(res.data);
                 const data = _.cloneDeep(res.data);
                 setTableData(
                     data.map((el: any) => {
                         el.updatedAt = moment(el.updatedAt).format('DD-MM-YYYY');
-                        el.en = (
+                        el.wordText = (
                             <>
-                                {el.en}
+                                {el.word.text}
                                 {el.phonetic && (
                                     <Typography variant="caption" component="p">
                                         [{el.phonetic}]
@@ -39,8 +39,28 @@ function useDashboard() {
                                 )}
                             </>
                         );
+                        el.translationText = el.translation.text;
                         el.isAudio = Boolean(el.phoneticAudio);
-                        return el;
+                        // return el;
+                        return {
+                            wordText: (
+                                <>
+                                    {el.word.text}
+                                    {el.phonetic && (
+                                        <Typography variant="caption" component="p">
+                                            [{el.phonetic}]
+                                        </Typography>
+                                    )}
+                                </>
+                            ),
+                            translationText: el.translation.text,
+                            wordType: el.wordType,
+                            definition: el.definition,
+                            category: el.category,
+                            updatedAt: moment(el.updatedAt).format('DD-MM-YYYY'),
+                            isAudio: Boolean(el.phoneticAudio),
+                            id: el.id
+                        };
                     })
                 );
                 setLoading(false);
@@ -63,11 +83,11 @@ function useDashboard() {
     const onDeleteWord = async ({ id }: any) => {
         setLoading(true);
         // await new Promise(resolve => setTimeout(resolve, 1500));
-        API.delete(`word/${id}`)
+        API.delete(`en-pl/word/${id}`)
             .then(res => {
                 getData();
                 setSnackbarData({
-                    title: 'Word ' + res.data.data.en + ' deleted',
+                    title: 'Word ' + res.data.data.word.text + ' deleted',
                     variant: 'success'
                 });
             })
@@ -83,7 +103,7 @@ function useDashboard() {
     const onDetailsWord = async ({ id }: any) => {
         setLoading(true);
         // await new Promise(resolve => setTimeout(resolve, 1500));
-        await API.get(`word/details/${id}`)
+        await API.get(`en-pl/word/details/${id}`)
             .then(res => {
                 setDetailsData(res.data);
                 setLoading(false);
@@ -135,4 +155,4 @@ function useDashboard() {
     };
 }
 
-export default useDashboard;
+export default useEnDict;

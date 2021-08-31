@@ -1,10 +1,4 @@
-import {
-    AccountBalance,
-    Cake,
-    Dashboard,
-    Help,
-    Info
-} from '@material-ui/icons';
+import { Dashboard, GTranslate, Spellcheck } from '@material-ui/icons';
 
 export const navigationConfig = [
     {
@@ -16,25 +10,27 @@ export const navigationConfig = [
 
 export const navigation2ndSectionConfig = [
     {
-        title: 'Help',
-        icon: <Help />
+        title: 'English dict',
+        icon: <GTranslate />,
+        to: '/en-pl-dict'
     },
     {
-        title: 'Contact',
-        icon: <Info />
+        title: 'Polish dict',
+        icon: <Spellcheck />,
+        to: '/pl-ru-dict'
     }
 ];
 export const navigation3rdSectionConfig = [
-    {
-        title: 'Rules',
-        icon: <AccountBalance />
-        // to: "/rules"
-    },
-    {
-        title: 'Cookie Policy',
-        icon: <Cake />
-        // to: "/cookie-policy"
-    }
+    // {
+    //     title: 'Rules',
+    //     icon: <AccountBalance />
+    //     // to: "/rules"
+    // },
+    // {
+    //     title: 'Cookie Policy',
+    //     icon: <Cake />
+    //     // to: "/cookie-policy"
+    // }
 ];
 
 export const sidebarItemsList = [navigationConfig, navigation2ndSectionConfig, navigation3rdSectionConfig];

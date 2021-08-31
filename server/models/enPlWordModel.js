@@ -1,10 +1,16 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const Word = new Schema(
+const EnPlWord = new Schema(
     {
-        pl: { type: String, required: true },
-        en: { type: String, required: true },
+        word: {
+            text: { type: String, required: true },
+            lang: { type: String, required: true }
+        },
+        translation: {
+            text: { type: String, required: true },
+            lang: { type: String, required: true }
+        },
         definition: { type: String, required: false },
         category: { type: String, required: false },
         phonetic: { type: String, required: false },
@@ -15,10 +21,10 @@ const Word = new Schema(
 );
 
 // replace _id by id for front
-Word.method('toJSON', function () {
+EnPlWord.method('toJSON', function () {
     const { _id, ...object } = this.toObject();
     object.id = _id;
     return object;
 });
 
-module.exports = mongoose.model(process.argv.slice(2)[0] === 'test' ? 'test' : 'words', Word);
+module.exports = mongoose.model(process.argv.slice(2)[0] === 'test' ? 'en-pl-test' : 'en-pl', EnPlWord);
