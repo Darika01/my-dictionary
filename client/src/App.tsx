@@ -1,6 +1,7 @@
 import Dashboard from 'components/pages/Dashboard';
-import EnDict from 'components/pages/EnDict';
-import PlRuDict from 'components/pages/PlRuDict';
+import Dictionary from 'components/pages/Dictionary';
+import Settings from 'components/pages/Settings';
+import { GlobalContextProvider } from 'context/globalContext';
 import {
     BrowserRouter as Router,
     Redirect,
@@ -26,8 +27,8 @@ function App() {
                 <Redirect from="/:url*(/+)" to={pathname.slice(0, -1)} />
                 <Redirect exact from="/" to="/dashboard" />
                 <Route exact path="/dashboard" component={Dashboard} />
-                <Route exact path="/en-pl-dict" component={EnDict} />
-                <Route exact path="/pl-ru-dict" component={PlRuDict} />
+                <Route exact path="/dictionary/:dictName" component={Dictionary} />
+                <Route exact path="/settings" component={Settings} />
                 <Route exact path="/404" component={PageNotFound} />
                 <Redirect to="/404" push={false} />
             </Switch>
@@ -40,9 +41,11 @@ const AppContainer: React.FC = () => {
     useStyles();
     return (
         <ThemeProvider theme={theme}>
-            <Router>
-                <App />
-            </Router>
+            <GlobalContextProvider>
+                <Router>
+                    <App />
+                </Router>
+            </GlobalContextProvider>
         </ThemeProvider>
     );
 };

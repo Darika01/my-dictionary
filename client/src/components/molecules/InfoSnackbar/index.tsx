@@ -1,29 +1,20 @@
-import { useState } from 'react';
-
 import RoundButton from 'components/atoms/buttons/RoundButton';
 
 import Snackbar from '@material-ui/core/Snackbar';
 import Close from '@material-ui/icons/Close';
 import Alert from '@material-ui/lab/Alert';
 
-type SnackbarVariantTYPE = 'error' | 'info' | 'success' | 'warning';
+export type SnackbarVariantTYPE = 'error' | 'info' | 'success' | 'warning';
 
 export type SnackbarTYPE = {
-    title: string;
+    message: string;
     variant: SnackbarVariantTYPE;
 };
 
 interface InfoSnackbarProps extends SnackbarTYPE {
     onClose: () => void;
 }
-const InfoSnackbar: React.FC<InfoSnackbarProps> = ({ title, variant, onClose }) => {
-    const [Open, setOpen] = useState(true);
-
-    const handleClose = () => {
-        setOpen(false);
-        onClose();
-    };
-
+const InfoSnackbar: React.FC<InfoSnackbarProps> = ({ message, variant, onClose }) => {
     return (
         <div>
             <Snackbar
@@ -31,19 +22,19 @@ const InfoSnackbar: React.FC<InfoSnackbarProps> = ({ title, variant, onClose }) 
                     vertical: 'bottom',
                     horizontal: 'center'
                 }}
-                open={Open}
+                open={true}
                 autoHideDuration={6000}
-                onClose={handleClose}
+                onClose={onClose}
                 action={
                     <>
-                        <RoundButton color="secondary" size="small" handleClick={handleClose}>
+                        <RoundButton color="secondary" size="small" handleClick={onClose}>
                             <Close />
                         </RoundButton>
                     </>
                 }
             >
-                <Alert onClose={handleClose} severity={variant}>
-                    {title}
+                <Alert onClose={onClose} severity={variant}>
+                    {message}
                 </Alert>
             </Snackbar>
         </div>

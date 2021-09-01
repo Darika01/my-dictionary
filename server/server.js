@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const db = require('./config/dBConfig');
-const enPlWordRouter = require('./routes/enPlWordRouter');
-const plRuWordRouter = require('./routes/plRuWordRouter');
+const dictionaryRouter = require('./routes/dictionaryRouter');
+const wordRouter = require('./routes/wordRouter');
 
 const app = express();
 const apiPort = 8080;
@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
     res.send('Hello World2!');
 });
 
-app.use('/api', enPlWordRouter);
-app.use('/api', plRuWordRouter);
+app.use('/api', dictionaryRouter);
+app.use('/api', wordRouter);
 
 app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`));

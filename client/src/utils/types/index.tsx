@@ -11,8 +11,21 @@ export type worDataTYPE = {
         text: string;
         lang: string;
     };
+    wordText: string;
+    translationText: string;
     updatedAt: string;
     phonetic: string | null;
     phoneticAudio: string | null;
     wordType: string;
+};
+
+export type googleTranslateWordDataDefinitionTYPE = {
+    definition: string;
+    example: string;
+    synonyms: string[] | [];
+    antonyms: string[] | [];
+};
+export type googleTranslateWordDataTYPE = {
+    partOfSpeech: string;
+    definitions: googleTranslateWordDataDefinitionTYPE[];
 };

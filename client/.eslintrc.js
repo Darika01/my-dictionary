@@ -44,5 +44,11 @@ module.exports = {
         '@typescript-eslint/type-annotation-spacing': 'error',
         '@typescript-eslint/ban-ts-comment': 'off',
         '@typescript-eslint/explicit-module-boundary-types': 'off'
+    },
+    root: true,
+    settings: {
+        jest: {
+            version: '^26.6.0'
+        }
     }
 };
