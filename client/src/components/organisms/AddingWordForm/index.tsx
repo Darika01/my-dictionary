@@ -1,27 +1,26 @@
 import RectangularButton from 'components/atoms/buttons/RectangularButton';
-import { SnackbarTYPE } from 'components/molecules/InfoSnackbar';
 import FormikInput from 'components/molecules/textfields/FormikInput';
 import FormikSelect from 'components/molecules/textfields/FormikSelect';
 import { Form, Formik } from 'formik';
 
 import { Save } from '@material-ui/icons';
 
-import { setInitErrors, setInitValues, validationSchema } from '../dashboardHelpers';
 import useAddingWordForm from './AddingWordForm.hook';
+import { setInitErrors, setInitValues, validationSchema, wordTypeOptions } from './helpers';
 import useStyles from './styles';
 
 export interface AddingWordFormProps {
     getData: () => void;
-    setSnackbarData: (data: SnackbarTYPE) => void;
+    dictName: string;
 }
 
-const AddingWordForm: React.FC<AddingWordFormProps> = ({ getData, setSnackbarData }) => {
+const AddingWordForm: React.FC<AddingWordFormProps> = ({ dictName, getData }) => {
     const classes = useStyles();
-    const { postData } = useAddingWordForm(getData, setSnackbarData);
+    const { postData } = useAddingWordForm(dictName, getData);
 
     return (
         <Formik
-            initialValues={setInitValues()}
+            initialValues={setInitValues(dictName.split('-')[0] === 'en')}
             validationSchema={validationSchema}
             initialErrors={setInitErrors()}
             onSubmit={postData}
@@ -30,18 +29,12 @@ const AddingWordForm: React.FC<AddingWordFormProps> = ({ getData, setSnackbarDat
                 <Form className="formContainer">
                     <div className={classes.form}>
                         <div>
-                            <FormikInput name="word" label="Word" />
-                            <FormikSelect
-                                name="wordType"
-                                label="Word type"
-                                options={[
-                                    { value: 'word', label: 'Word' },
-                                    { value: 'sentence', label: 'Sentence' },
-                                    { value: 'phrase', label: 'Phrase' }
-                                ]}
-                            />
+                            <FormikInput name="wordText" label="Word" />
+                            <FormikSelect name="wordType" label="Word type" options={wordTypeOptions} />
                         </div>
-                        <FormikInput name="definition" label="Definition" fullWidth />
+                        {dictName.split('-')[0] === 'en' && (
+                            <FormikInput name="definition" label="Definition" fullWidth />
+                        )}
                     </div>
                     <div>
                         <RectangularButton
