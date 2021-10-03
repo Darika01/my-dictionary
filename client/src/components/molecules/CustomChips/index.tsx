@@ -1,6 +1,6 @@
 import GoogleTranslateLink from 'components/atoms/GoogleTranslateLink';
 
-import { Chip, Typography } from '@material-ui/core';
+import { Chip, Typography } from '@mui/material';
 
 import useStyles from './styles';
 

@@ -1,7 +1,7 @@
 import RoundButton from 'components/atoms/buttons/RoundButton';
 
-import { DialogTitle } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import { Close } from '@mui/icons-material';
+import { DialogTitle } from '@mui/material';
 
 import useStyles from './styles';
 
@@ -11,7 +11,8 @@ interface CustomDialogTitleProps {
 const CustomDialogTitle: React.FC<CustomDialogTitleProps> = ({ children, onCloseDialog }) => {
     const classes = useStyles();
     return (
-        <DialogTitle disableTypography className={classes.title}>
+        <DialogTitle className={classes.title}>
+            {/* <DialogTitle disableTypography className={classes.title}> */}
             {children}
             {typeof onCloseDialog === 'function' && (
                 <RoundButton handleClick={onCloseDialog} tooltipTitle="Close">

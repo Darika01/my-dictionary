@@ -11,8 +11,8 @@ import { getErrorMessage } from 'utils/getErrorMessage';
 import { worDataTYPE } from 'utils/types';
 import * as Yup from 'yup';
 
-import { Dialog, DialogActions, Divider, Typography } from '@material-ui/core';
-import { Close, Save } from '@material-ui/icons';
+import { Close, Save } from '@mui/icons-material';
+import { Dialog, DialogActions, Divider, Typography } from '@mui/material';
 
 import { wordTypeOptions } from '../AddingWordForm/helpers';
 import useStyles from './styles';

@@ -16,7 +16,7 @@ const translateWord = (res, body, langFrom, langTo, dict) => {
             body.translationText = translationRes.text.charAt(0).toLowerCase() + translationRes.text.slice(1);
 
             const word = new Word(body);
-            word.dictionaryId = { _id: dict._id };
+            word.dictionary = { _id: dict._id };
             console.log(`word`, word);
 
             if (!word) {
@@ -94,7 +94,7 @@ const update = async (req, res) => {
     const langFrom = req.params.dictName.split('-')[0];
     const dict = await findDict(req.params.dictName, res);
     if (!dict) return;
-    Word.findOne({ _id: req.params.id, dictionaryId: dict._id }, (err, word) => {
+    Word.findOne({ _id: req.params.id, dictionary: dict._id }, (err, word) => {
         if (err) return res.status(500).json(err);
         if (!word) {
             return res.status(404).json({ message: `Word not found` });
@@ -123,7 +123,7 @@ const update = async (req, res) => {
 const getById = async (req, res) => {
     const dict = await findDict(req.params.dictName, res);
     if (!dict) return;
-    await Word.findOne({ _id: req.params.id, dictionaryId: dict._id }, (err, word) => {
+    await Word.findOne({ _id: req.params.id, dictionary: dict._id }, (err, word) => {
         if (err) return res.status(400).json(err);
         if (!word) return res.status(404).json({ message: 'Word not found' });
 

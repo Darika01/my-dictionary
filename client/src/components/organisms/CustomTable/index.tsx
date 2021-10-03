@@ -3,13 +3,6 @@ import { useEffect, useRef, useState } from 'react';
 import RoundButton from 'components/atoms/buttons/RoundButton';
 import { replaceNullByValue } from 'utils/replaceNullByValue';
 
-import { Paper, Typography } from '@material-ui/core';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import {
     Create,
     Delete,
@@ -17,7 +10,14 @@ import {
     PlayCircleFilled,
     Visibility,
     VisibilityOff
-} from '@material-ui/icons';
+} from '@mui/icons-material';
+import { Paper, Typography } from '@mui/material';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
 import useStyles from './styles';
 
@@ -109,7 +109,7 @@ const CustomTable: <TRow extends Record<string, any>>(props: CustomTableI<TRow>)
         <TableContainer
             component={Paper}
             style={{ maxHeight: `calc(100vh - 4rem - ${tableRef.current?.offsetTop}px)` }}
-            ref={tableRef}
+            // ref={tableRef}
         >
             <Table stickyHeader aria-label="table" style={{ minWidth: '60rem' }}>
                 <TableHead>

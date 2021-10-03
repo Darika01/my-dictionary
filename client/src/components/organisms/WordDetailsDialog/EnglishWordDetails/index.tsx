@@ -1,7 +1,7 @@
 import CustomChips from 'components/molecules/CustomChips';
 import { googleTranslateWordDataDefinitionTYPE, googleTranslateWordDataTYPE } from 'utils/types';
 
-import { Avatar, Typography } from '@material-ui/core';
+import { Avatar, Typography } from '@mui/material';
 
 import useStyles from './styles';
 

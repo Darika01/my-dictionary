@@ -3,7 +3,7 @@ import FormikInput from 'components/molecules/textfields/FormikInput';
 import FormikSelect from 'components/molecules/textfields/FormikSelect';
 import { Form, Formik } from 'formik';
 
-import { Save } from '@material-ui/icons';
+import { Save } from '@mui/icons-material';
 
 import useAddingWordForm from './AddingWordForm.hook';
 import { setInitErrors, setInitValues, validationSchema, wordTypeOptions } from './helpers';

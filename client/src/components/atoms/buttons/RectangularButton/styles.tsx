@@ -1,6 +1,7 @@
 import getLighterColor from 'utils/getLighterColor';
 
-import { makeStyles, Theme } from '@material-ui/core';
+import { Theme } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
 export type colorTYPE = 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | 'grey';
 

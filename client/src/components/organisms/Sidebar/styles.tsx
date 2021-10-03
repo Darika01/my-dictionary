@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from '@mui/styles';
 
 export const drawerWidth = '24rem';
 export const drawerWidthCollapsed = '7.2rem';

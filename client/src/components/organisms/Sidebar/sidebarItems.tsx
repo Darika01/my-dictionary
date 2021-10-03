@@ -1,4 +1,4 @@
-import { Dashboard, GTranslate, Settings, Spellcheck } from '@material-ui/icons';
+import { Dashboard, GTranslate, Settings, Spellcheck } from '@mui/icons-material';
 
 export const navigationConfig = [
     {

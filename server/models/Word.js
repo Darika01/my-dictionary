@@ -10,9 +10,14 @@ const Word = new Schema(
         phonetic: { type: String, required: false },
         phoneticAudio: { type: String, required: false },
         wordType: { type: String, enum: ['word', 'phrase', 'sentence'], required: true },
-        dictionaryId: {
+        dictionary: {
             type: Schema.Types.ObjectId,
             ref: process.argv.slice(2)[0] === 'test' ? 'Dictionary-test' : 'Dictionary',
+            required: true
+        },
+        author: {
+            type: Schema.Types.ObjectId,
+            ref: process.argv.slice(2)[0] === 'test' ? 'User-test' : 'User',
             required: true
         }
     },

@@ -1,4 +1,5 @@
-import { makeStyles, Theme } from '@material-ui/core/styles';
+import { Theme } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
 export type positionTYPE = 'relative' | 'absolute' | 'fixed';
 export type colorTYPE = 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | 'grey';

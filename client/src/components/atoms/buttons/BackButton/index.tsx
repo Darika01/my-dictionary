@@ -1,7 +1,8 @@
 import { useHistory } from 'react-router-dom';
 
-import { IconButton, makeStyles, Tooltip } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { ArrowBack } from '@mui/icons-material';
+import { IconButton, Tooltip } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(() => ({
     button: {
@@ -18,7 +19,7 @@ const BackButton: React.FC = () => {
     return (
         <Tooltip title={tooltipText}>
             <IconButton onClick={onBackClick} className={classes.button}>
-                <ArrowBackIcon />
+                <ArrowBack />
             </IconButton>
         </Tooltip>
     );

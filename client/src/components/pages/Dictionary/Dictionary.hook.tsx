@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 import { getErrorMessage } from 'utils/getErrorMessage';
 import { worDataTYPE } from 'utils/types';
 
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 
 function usePlRuDict() {
     const { dispatchContext } = useGlobalContext();

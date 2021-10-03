@@ -1,8 +1,8 @@
 import RoundButton from 'components/atoms/buttons/RoundButton';
 
-import Snackbar from '@material-ui/core/Snackbar';
-import Close from '@material-ui/icons/Close';
-import Alert from '@material-ui/lab/Alert';
+import { Close } from '@mui/icons-material';
+import { Alert } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
 
 export type SnackbarVariantTYPE = 'error' | 'info' | 'success' | 'warning';
 
