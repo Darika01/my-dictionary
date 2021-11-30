@@ -33,6 +33,7 @@ const MainLayout: React.FC = ({ children }) => {
         setIsSidebarOpen(isOpen);
         localStorage.setItem('isSidebarOpen', isOpen);
     };
+
     useEffect(() => {
         window.scrollTo(0, 0);
         // eslint-disable-next-line react-hooks/exhaustive-deps

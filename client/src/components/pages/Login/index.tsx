@@ -40,12 +40,13 @@ const Login: React.FC = () => {
         setIsLoading(true);
         await API.post('user/login', values)
             .then(res => {
-                localStorage.setItem('access_token', res.data.token);
+                localStorage.setItem('access_token', res.data.access_token);
                 history.push('/dashboard');
             })
             .catch(err => {
                 setIsLoading(false);
-                enqueueSnackbar(err.message, {
+                console.log(err.response);
+                enqueueSnackbar(err?.response?.data?.message, {
                     variant: 'error'
                 });
             });

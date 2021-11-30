@@ -18,8 +18,8 @@ const User = new Schema(
         },
         dictionary: {
             type: Schema.Types.ObjectId,
-            ref: process.argv.slice(2)[0] === 'test' ? 'Dictionary-test' : 'Dictionary',
-            required: true
+            ref: process.argv.slice(2)[0] === 'test' ? 'Dictionary-test' : 'Dictionary'
+            // required: true
         },
         words: [
             {

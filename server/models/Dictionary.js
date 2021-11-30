@@ -11,12 +11,12 @@ const Dictionary = new Schema(
                 type: Schema.Types.ObjectId,
                 ref: process.argv.slice(2)[0] === 'test' ? 'Word-test' : 'Word'
             }
-        ],
-        author: {
-            type: Schema.Types.ObjectId,
-            ref: process.argv.slice(2)[0] === 'test' ? 'User-test' : 'User',
-            required: true
-        }
+        ]
+        // author: {
+        //     type: Schema.Types.ObjectId,
+        //     ref: process.argv.slice(2)[0] === 'test' ? 'User-test' : 'User',
+        //     required: true
+        // }
     },
     { timestamps: true }
 );

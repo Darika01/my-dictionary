@@ -19,7 +19,7 @@ import { checkUserIsLoggedIn } from 'utils/authenticationService';
 
 import { Close, Error } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
-import { ThemeProvider } from '@mui/material/styles';
+import { StyledEngineProvider, ThemeProvider } from '@mui/material/styles';
 
 import PageNotFound from './components/pages/PageNotFound';
 import useStyles from './styles';
@@ -53,38 +53,40 @@ const AppContainer: React.FC = () => {
         notistackRef.current?.closeSnackbar(key);
     };
     return (
-        <ThemeProvider theme={theme}>
-            <GlobalContextProvider>
-                <SnackbarProvider
-                    maxSnack={4}
-                    ref={notistackRef}
-                    autoHideDuration={3300}
-                    anchorOrigin={{
-                        horizontal: 'center',
-                        vertical: 'bottom'
-                    }}
-                    transitionDuration={{
-                        enter: 300,
-                        exit: 150
-                    }}
-                    iconVariant={{
-                        error: <Error style={{ marginRight: '8px' }} />
-                    }}
-                    disableWindowBlurListener
-                    action={key => (
-                        <ArrowTooltip title="Close">
-                            <IconButton key="close" onClick={onClickDismiss(key)} color="inherit">
-                                <Close />
-                            </IconButton>
-                        </ArrowTooltip>
-                    )}
-                >
-                    <Router>
-                        <App />
-                    </Router>
-                </SnackbarProvider>
-            </GlobalContextProvider>
-        </ThemeProvider>
+        <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={theme}>
+                <GlobalContextProvider>
+                    <SnackbarProvider
+                        maxSnack={4}
+                        ref={notistackRef}
+                        autoHideDuration={3300}
+                        anchorOrigin={{
+                            horizontal: 'center',
+                            vertical: 'bottom'
+                        }}
+                        transitionDuration={{
+                            enter: 300,
+                            exit: 150
+                        }}
+                        iconVariant={{
+                            error: <Error style={{ marginRight: '.8rem' }} />
+                        }}
+                        disableWindowBlurListener
+                        action={(key: any) => (
+                            <ArrowTooltip title="Close">
+                                <IconButton key="close" onClick={onClickDismiss(key)} color="inherit">
+                                    <Close />
+                                </IconButton>
+                            </ArrowTooltip>
+                        )}
+                    >
+                        <Router>
+                            <App />
+                        </Router>
+                    </SnackbarProvider>
+                </GlobalContextProvider>
+            </ThemeProvider>
+        </StyledEngineProvider>
     );
 };
 

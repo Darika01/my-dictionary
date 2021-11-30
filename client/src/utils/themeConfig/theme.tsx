@@ -15,6 +15,7 @@ declare module '@mui/styles/defaultTheme' {
 
 export default createTheme({
     palette: {
+        mode: 'light',
         primary: {
             light: 'rgba(31, 36, 120, 1)', // 15% lighter
             main: colorPrimaryMain,
@@ -39,27 +40,26 @@ export default createTheme({
     //@ts-ignore
     components: {
         MuiCssBaseline: {
-            styleOverrides: {
-                '@global': {
-                    /* Works on Firefox */
-                    '*': {
-                        'scrollbar-width': 'thin',
-                        'scrollbar-color': `${colorSecondaryMain} ${colorPrimaryMain}`
-                    },
-                    /* Works on Chrome, Edge, and Safari */
-                    '*::-webkit-scrollbar': {
-                        width: '4px',
-                        height: '4px'
-                    },
-                    '*::-webkit-scrollbar-track': {
-                        background: 'black'
-                    },
-                    '*::-webkit-scrollbar-thumb': {
-                        backgroundColor: colorSecondaryMain,
-                        borderRadius: '10px'
+            styleOverrides: `
+                html {
+                    * {
+                        scrollbar-width: thin;
+                        scrollbar-color: ${colorSecondaryMain} ${colorPrimaryMain};
                     }
+                    *::-webkit-scrollbar {
+                        width: .4rem;
+                        height: .4rem;
+                    }
+                    *::-webkit-scrollbar-track {
+                        background: black;
+                    }
+                    *::-webkit-scrollbar-thumb {
+                        background-color: ${colorSecondaryMain};
+                        borderRadius: 1rem;
+                    }
+
                 }
-            }
+            `
         },
         ...overrides
     }

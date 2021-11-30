@@ -10,12 +10,17 @@ export const navigationConfig = [
 
 export const navigation2ndSectionConfig = [
     {
-        title: 'English dict',
+        title: 'EN-PL dict',
         icon: <GTranslate />,
         to: '/dictionary/en-pl'
     },
     {
-        title: 'Polish dict',
+        title: 'Pl-EN dict',
+        icon: <GTranslate />,
+        to: '/dictionary/pl-en'
+    },
+    {
+        title: 'PL-RU dict',
         icon: <Spellcheck />,
         to: '/dictionary/pl-ru'
     }
