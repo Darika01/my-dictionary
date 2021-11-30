@@ -1,6 +1,6 @@
 import CircularLoader from 'components/atoms/CircularLoader';
 
-import { Backdrop } from '@material-ui/core';
+import { Backdrop } from '@mui/material';
 
 import { useStyles } from './styles';
 

@@ -1,7 +1,7 @@
 import GoogleTranslateLink from 'components/atoms/GoogleTranslateLink';
 import CustomDialogTitle from 'components/molecules/CustomDialogTitle';
 
-import { Dialog, DialogContent, Divider, Typography } from '@material-ui/core';
+import { Dialog, DialogContent, Divider, Typography } from '@mui/material';
 
 import EnglishWordDetails from './EnglishWordDetails';
 import useStyles from './EnglishWordDetails/styles';

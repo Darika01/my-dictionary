@@ -5,11 +5,9 @@ import parse from 'autosuggest-highlight/parse';
 import clsx from 'clsx';
 import CircularLoader from 'components/atoms/CircularLoader';
 import { connect, FormikValues } from 'formik';
-import _ from 'lodash';
 
-import { FormHelperText, useTheme } from '@material-ui/core';
-import TextField, { BaseTextFieldProps } from '@material-ui/core/TextField';
-import { Autocomplete, AutocompleteCloseReason } from '@material-ui/lab';
+import { Autocomplete, FormHelperText, useTheme } from '@mui/material';
+import TextField, { BaseTextFieldProps } from '@mui/material/TextField';
 
 import useStyles from './styles';
 
@@ -61,15 +59,15 @@ const FormikAutosuggest: React.FC<FormikAutosuggestProps> = ({
             onOpen={() => {
                 setAutosuggestOpen(true);
             }}
-            onClose={(event: React.BaseSyntheticEvent, reason: AutocompleteCloseReason) => {
+            onClose={(event: React.BaseSyntheticEvent, reason: string) => {
                 setAutosuggestOpen(false);
-                reason === 'select-option' && setTouched({ ...touched, [name]: false });
+                reason === 'selectOption' && setTouched({ ...touched, [name]: false });
 
                 reason === 'blur' && setTouched({ ...touched, [name]: true });
             }}
             options={options}
             getOptionLabel={labelingFunction}
-            getOptionSelected={(option, value) => _.isEqual(option, value)}
+            // getOptionSelected={(option, value) => _.isEqual(option, value)}
             onChange={(event: React.BaseSyntheticEvent, newValue: any) => {
                 setFieldValue(name, newValue);
                 if (!newValue) setTouched({ ...touched, [name]: true });

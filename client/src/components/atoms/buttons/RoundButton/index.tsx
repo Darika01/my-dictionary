@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import ArrowTooltip from 'components/atoms/ArrowTooltip';
 
-import { Fab } from '@material-ui/core';
+import { Fab } from '@mui/material';
 
 import { ColorTYPE, useStyles } from './styles';
 

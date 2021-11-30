@@ -1,10 +1,10 @@
 import clsx from 'clsx';
 import RoundButton from 'components/atoms/buttons/RoundButton';
 
-import { Drawer, List, Toolbar, Typography } from '@material-ui/core';
-import { Translate } from '@material-ui/icons';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import { Translate } from '@mui/icons-material';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { Drawer, List, Toolbar, Typography } from '@mui/material';
 
 import NavigationListItem from '../../atoms/NavigationListItem';
 import { sidebarItemsList } from './sidebarItems';

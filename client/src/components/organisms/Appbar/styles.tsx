@@ -1,4 +1,5 @@
-import { makeStyles, Theme } from '@material-ui/core';
+import { Theme } from '@mui/material';
+import { makeStyles } from '@mui/styles';
 
 import { drawerWidth, drawerWidthCollapsed } from '../Sidebar/styles';
 
@@ -21,7 +22,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     toolbar: {
         maxWidth: '128rem',
         width: '100%',
-        margin: '0 auto'
+        margin: '0 auto',
+        display: 'flex',
+        justifyContent: 'space-between'
     }
 }));
 

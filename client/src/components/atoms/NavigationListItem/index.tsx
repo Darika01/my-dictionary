@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 
-import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { ListItem, ListItemIcon, ListItemText } from '@mui/material';
 
 import { useStyles } from './styles';
 

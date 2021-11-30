@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom';
 import { getErrorMessage } from 'utils/getErrorMessage';
 import { worDataTYPE } from 'utils/types';
 
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 
 function usePlRuDict() {
     const { dispatchContext } = useGlobalContext();
@@ -17,8 +17,9 @@ function usePlRuDict() {
     const langFrom = dictName.split('-')[0];
     const langTo = dictName.split('-')[1];
 
-    const getDataUrl = `/dictionaries/${dictName}/words`;
-    const { fetchedData: data, loading, fetcher } = useFetchData<any>(getDataUrl);
+    const dataUrl = `/dictionaries/${dictName}/words`;
+
+    const { fetchedData: data, loading, fetcher } = useFetchData<any>(dataUrl, { isArray: true });
 
     const [TableData, setTableData] = useState([]);
     const [DetailsData, setDetailsData] = useState<any>(null);
@@ -84,7 +85,7 @@ function usePlRuDict() {
         setLoading(true);
         API.delete(`word/${dictName}/${id}`)
             .then(res => {
-                fetcher(getDataUrl, false);
+                fetcher(dataUrl, false);
                 dispatchContext({
                     type: OPEN_ALERT,
                     message: 'Word ' + res.data.data.wordText + ' deleted',
@@ -104,7 +105,7 @@ function usePlRuDict() {
 
     const closeEditDialog = (shouldUpdateTableData: boolean) => {
         setEditData(null);
-        if (shouldUpdateTableData) fetcher(getDataUrl, false);
+        if (shouldUpdateTableData) fetcher(dataUrl, false);
     };
 
     const onEditData = (row: any) => {

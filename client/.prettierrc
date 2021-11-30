@@ -4,5 +4,7 @@
     "singleQuote": true,
     "bracketSpacing": true,
     "trailingComma": "none",
+    "prettier.useTabs": true,
+    "semi": true,
     "arrowParens": "avoid"
 }

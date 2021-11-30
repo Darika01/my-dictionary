@@ -3,8 +3,9 @@ const Word = require('../models/Word');
 const getGoogleTranslateApi = require('./utils/getGoogleTranslateApi');
 const axios = require('axios');
 const findDict = require('./utils/findDict');
+const User = require('../models/User');
 
-const translateWord = (res, body, langFrom, langTo, dict) => {
+const translateWord = (res, body, langFrom, langTo, dict, user) => {
     translate(body.wordText, { from: langFrom, to: langTo })
         .then(translationRes => {
             if (translationRes.from.language.iso !== langFrom) {
@@ -16,7 +17,8 @@ const translateWord = (res, body, langFrom, langTo, dict) => {
             body.translationText = translationRes.text.charAt(0).toLowerCase() + translationRes.text.slice(1);
 
             const word = new Word(body);
-            word.dictionaryId = { _id: dict._id };
+            word.dictionary = { _id: dict._id };
+            word.author = { _id: user._id };
             console.log(`word`, word);
 
             if (!word) {
@@ -31,9 +33,13 @@ const translateWord = (res, body, langFrom, langTo, dict) => {
                 dict.words.push(wordRes._id);
                 dict.save((err, dictRes) => {
                     if (err) return res.status(400).json(err);
-                    return res.status(201).json({
-                        message: 'Word added',
-                        data: word
+                    user.words.push(wordRes._id);
+                    user.save((err, userRes) => {
+                        if (err) return res.status(400).json(err);
+                        return res.status(201).json({
+                            message: 'Word added',
+                            data: word
+                        });
                     });
                 });
             });
@@ -47,7 +53,13 @@ const translateWord = (res, body, langFrom, langTo, dict) => {
 };
 
 const create = async (req, res) => {
+    if (!req.user) {
+        return res.status(401).json({ message: 'UNAUTHORIZED' });
+    }
+
+    const user = await User.findById(req.user.id);
     const body = req.body;
+
     if (!body) {
         return res.status(400).json({
             error: 'You must provide a word'
@@ -73,7 +85,7 @@ const create = async (req, res) => {
                 body.phonetic = googleRes?.data[0].phonetic ?? null;
                 body.phoneticAudio = googleRes?.data[0].phonetics[0].audio ?? null;
                 console.log('body :>> ', body);
-                translateWord(res, body, langFrom, langTo, dict);
+                translateWord(res, body, langFrom, langTo, dict, user);
             })
             .catch(() =>
                 res.status(404).json({
@@ -81,7 +93,7 @@ const create = async (req, res) => {
                     message: 'Google definition error. Word not added'
                 })
             );
-    } else translateWord(res, body, langFrom, langTo, dict);
+    } else translateWord(res, body, langFrom, langTo, dict, user);
 };
 
 const update = async (req, res) => {
@@ -94,7 +106,7 @@ const update = async (req, res) => {
     const langFrom = req.params.dictName.split('-')[0];
     const dict = await findDict(req.params.dictName, res);
     if (!dict) return;
-    Word.findOne({ _id: req.params.id, dictionaryId: dict._id }, (err, word) => {
+    Word.findOne({ _id: req.params.id, dictionary: dict._id }, (err, word) => {
         if (err) return res.status(500).json(err);
         if (!word) {
             return res.status(404).json({ message: `Word not found` });
@@ -123,7 +135,7 @@ const update = async (req, res) => {
 const getById = async (req, res) => {
     const dict = await findDict(req.params.dictName, res);
     if (!dict) return;
-    await Word.findOne({ _id: req.params.id, dictionaryId: dict._id }, (err, word) => {
+    await Word.findOne({ _id: req.params.id, dictionary: dict._id }, (err, word) => {
         if (err) return res.status(400).json(err);
         if (!word) return res.status(404).json({ message: 'Word not found' });
 
@@ -150,7 +162,12 @@ const getById = async (req, res) => {
 };
 
 const deleteById = async (req, res) => {
+    if (!req.user) {
+        return res.status(401).json({ message: 'UNAUTHORIZED' });
+    }
     const dict = await findDict(req.params.dictName, res);
+    const user = await User.findById(req.user.id);
+
     if (!dict) return;
 
     await Word.findOneAndDelete({ _id: req.params.id })
@@ -162,18 +179,38 @@ const deleteById = async (req, res) => {
             dict.words.pull({ _id: req.params.id });
             dict.save((err, dictRes) => {
                 if (err) return res.status(500).json(err);
-                return res.status(200).json({ message: 'Word was deleted', data: word });
+                user.words.pull({ _id: req.params.id });
+                user.save((err, userRes) => {
+                    if (err) return res.status(500).json(err);
+                    // return res.status(200).json({ message: 'Word was deleted', data: word });
+                    if (err) return res.status(500).json(err);
+                    return res.status(200).json({ message: 'Word was deleted', data: word });
+                });
             });
         })
         .catch(err => res.status(500).json(err));
 };
 
 const getAll = async (req, res) => {
-    await Word.find()
-        .sort({ updatedAt: -1 })
-        .exec()
-        .then(data => res.status(200).json(data))
-        .catch(err => res.status(err).json({ message: err }));
+    if (!req.user) {
+        return res.status(401).json({ message: 'UNAUTHORIZED' });
+    }
+    try {
+        const user = await User.findById(req.user?.id);
+        await Word.find({ author: user._id })
+            .sort({ updatedAt: -1 })
+            .exec()
+            .then(data => {
+                console.log('BBBBB', data);
+                res.status(200).json(data);
+            })
+            .catch(err => res.status(err).json({ message: err }));
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({
+            message: 'Server Error'
+        });
+    }
 };
 
 module.exports = {

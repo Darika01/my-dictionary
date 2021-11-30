@@ -3,9 +3,9 @@ import { useState } from 'react';
 import clsx from 'clsx';
 import { connect, FormikValues } from 'formik';
 
-import { TextField } from '@material-ui/core';
-import MenuItem from '@material-ui/core/MenuItem';
-import { ExpandLess, ExpandMore } from '@material-ui/icons';
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { TextField } from '@mui/material';
+import MenuItem from '@mui/material/MenuItem';
 
 import useStyles from './styles';
 
@@ -52,7 +52,7 @@ const FormikSelect: React.FC<FormikSelectI> = ({
                         <div className="selectIcon">{SelectIconMenuOpened ? <ExpandLess /> : <ExpandMore />}</div>
                     ),
                     MenuProps: {
-                        getContentAnchorEl: null,
+                        // getContentAnchorEl: null,
                         anchorOrigin: {
                             vertical: 'bottom',
                             horizontal: 'center'

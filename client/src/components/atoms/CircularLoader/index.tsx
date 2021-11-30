@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { colorTYPE, positionTYPE, useStyles } from './styles';
 

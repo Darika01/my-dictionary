@@ -1,4 +1,4 @@
-import { Link } from '@material-ui/core';
+import { Link } from '@mui/material';
 
 interface GoogleTranslateLinkProps {
     value: string;

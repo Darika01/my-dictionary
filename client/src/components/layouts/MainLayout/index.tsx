@@ -8,7 +8,7 @@ import { useGlobalContext } from 'context/globalContext';
 import { useLocation } from 'react-router-dom';
 import breakpoints from 'utils/themeConfig/breakpoints';
 
-import { CssBaseline, Theme, Toolbar, useMediaQuery } from '@material-ui/core';
+import { CssBaseline, Theme, Toolbar, useMediaQuery } from '@mui/material';
 
 import useStyles from './styles';
 
@@ -18,21 +18,22 @@ const MainLayout: React.FC = ({ children }) => {
     const matchesDownSM = useMediaQuery((theme: Theme) => theme.breakpoints.down(breakpoints.sm));
     const { contextState, dispatchContext } = useGlobalContext();
 
-    const isSidebarOpen = sessionStorage.getItem('isSidebarOpen');
+    const isSidebarOpen = localStorage.getItem('isSidebarOpen');
     const [IsSidebarOpen, setIsSidebarOpen] = useState<string>('true');
 
     useEffect(() => {
         const isOpen = matchesDownSM ? 'false' : isSidebarOpen ?? 'true';
         setIsSidebarOpen(isOpen);
-        sessionStorage.setItem('isSidebarOpen', isOpen);
+        localStorage.setItem('isSidebarOpen', isOpen);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [matchesDownSM]);
 
     const handleDrawer = (open: boolean) => {
         const isOpen = JSON.stringify(open);
         setIsSidebarOpen(isOpen);
-        sessionStorage.setItem('isSidebarOpen', isOpen);
+        localStorage.setItem('isSidebarOpen', isOpen);
     };
+
     useEffect(() => {
         window.scrollTo(0, 0);
         // eslint-disable-next-line react-hooks/exhaustive-deps

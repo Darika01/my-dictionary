@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/styles';
 
 export const useStyles = makeStyles(() => ({
     noDataBody: {
@@ -11,7 +11,7 @@ export const useStyles = makeStyles(() => ({
     },
     visibilityOff: {
         textShadow: '0px 0px 1.2rem #4c4b4b',
-        color: 'transparent'
+        color: 'transparent !important'
     }
 }));
 

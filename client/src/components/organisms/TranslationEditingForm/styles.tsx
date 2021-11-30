@@ -1,6 +1,6 @@
 import breakpoints from 'utils/themeConfig/breakpoints';
 
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@mui/styles';
 
 export const useStyles = makeStyles(theme => ({
     formContainer: {

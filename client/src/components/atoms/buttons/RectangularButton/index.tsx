@@ -1,7 +1,7 @@
 import ArrowTooltip from 'components/atoms/ArrowTooltip';
 import CircularLoader from 'components/atoms/CircularLoader';
 
-import { Button, ButtonBaseProps, SvgIconProps } from '@material-ui/core';
+import { Button, ButtonBaseProps, SvgIconProps } from '@mui/material';
 
 import { colorTYPE, useStyles } from './styles';
 

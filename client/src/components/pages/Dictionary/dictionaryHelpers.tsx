@@ -1,8 +1,8 @@
-export const setColumns = (isEnDict: boolean) =>
-    isEnDict
+export const setColumns = (langFrom: string, langTo: string) =>
+    langFrom === 'EN'
         ? [
               { title: 'EN', value: 'wordText' },
-              { title: 'PL', value: 'translationText' },
+              { title: langTo, value: 'translationText' },
               // { title: 'Phonetic', value: 'phonetic' },
               { title: 'Definition', value: 'definition', cellSize: 'small' },
               { title: 'Category', value: 'category', cellSize: 'small' },
@@ -10,8 +10,8 @@ export const setColumns = (isEnDict: boolean) =>
               { title: 'Date', value: 'updatedAt', cellSize: 'small' }
           ]
         : [
-              { title: 'PL', value: 'wordText' },
-              { title: 'RU', value: 'translationText' },
+              { title: langFrom, value: 'wordText' },
+              { title: langTo, value: 'translationText' },
               { title: 'Word type', value: 'wordType', cellSize: 'small' },
               { title: 'Date', value: 'updatedAt', cellSize: 'small' }
           ];

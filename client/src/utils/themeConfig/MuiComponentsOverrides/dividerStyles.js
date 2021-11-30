@@ -1,7 +1,9 @@
 const dividerStyles = {
     MuiDivider: {
-        root: {
-            height: '.1rem'
+        styleOverrides: {
+            root: {
+                height: '.1rem'
+            }
         }
     }
 };

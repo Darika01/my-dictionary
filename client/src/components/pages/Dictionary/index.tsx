@@ -45,7 +45,7 @@ const PlRuDict: React.FC = () => {
                 onChange={() => setLangSwitch(LangSwitch === 'wordText' ? 'translationText' : 'wordText')}
             />
             <CustomTable
-                columns={setColumns(langFrom === 'en')}
+                columns={setColumns(langFrom.toLocaleUpperCase(), langTo.toLocaleUpperCase())}
                 data={TableData}
                 onDetails={onDetailsWord}
                 onEdit={onEditData}
