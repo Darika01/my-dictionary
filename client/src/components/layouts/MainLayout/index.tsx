@@ -6,6 +6,7 @@ import Sidebar from 'components/organisms/Sidebar';
 import { CLOSE_ALERT } from 'context/actions';
 import { useGlobalContext } from 'context/globalContext';
 import { useLocation } from 'react-router-dom';
+import { logoutUser } from 'utils/authService';
 import breakpoints from 'utils/themeConfig/breakpoints';
 
 import { CssBaseline, Theme, Toolbar, useMediaQuery } from '@mui/material';
@@ -38,6 +39,12 @@ const MainLayout: React.FC = ({ children }) => {
         window.scrollTo(0, 0);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname]);
+
+    useEffect(() => {
+        const unloadCallback = (event: any) => logoutUser();
+        window.addEventListener('beforeunload', unloadCallback);
+        return () => window.removeEventListener('beforeunload', unloadCallback);
+    }, []);
 
     const onCloseAlert = () => {
         dispatchContext({ type: CLOSE_ALERT });

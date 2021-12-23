@@ -1,16 +1,15 @@
 import ArrowTooltip from 'components/atoms/ArrowTooltip';
-import CircularLoader from 'components/atoms/CircularLoader';
 
-import { Button, ButtonBaseProps, SvgIconProps } from '@mui/material';
+import { ButtonBaseProps, SvgIconProps } from '@mui/material';
 
-import { colorTYPE, useStyles } from './styles';
+import { ButtonProgress, ColorTYPE, StyledButton, VariantTYPE } from './styles';
 
 interface RectangularButtonProps extends ButtonBaseProps {
     tooltipTitle?: string;
-    color?: colorTYPE;
+    color?: ColorTYPE;
     text: string;
     type?: 'button' | 'reset' | 'submit';
-    variant?: 'text' | 'outlined' | 'contained';
+    variant?: VariantTYPE;
     size?: 'large' | 'medium' | 'small';
     disabled?: boolean;
     startIcon?: SvgIconProps;
@@ -36,14 +35,12 @@ const RectangularButton: React.FC<RectangularButtonProps> = ({
     component = 'button',
     ...rest
 }) => {
-    const classes = useStyles({ color });
-
     return (
         <ArrowTooltip title={tooltipTitle ?? text} disabled={loading || disabled}>
-            <Button
-                className={classes[variant]}
+            <StyledButton
                 onClick={handleClick}
                 variant={variant}
+                color={color}
                 size={size}
                 fullWidth={fullWidth}
                 type={type}
@@ -53,9 +50,9 @@ const RectangularButton: React.FC<RectangularButtonProps> = ({
             >
                 <>
                     {text}
-                    {loading && <CircularLoader position="absolute" color={color} />}
+                    {loading && <ButtonProgress size={size === 'small' ? '1.4rem' : '1.6rem'} color={color} />}
                 </>
-            </Button>
+            </StyledButton>
         </ArrowTooltip>
     );
 };

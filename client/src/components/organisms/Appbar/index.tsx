@@ -2,7 +2,8 @@ import API from 'api';
 import { AxiosError } from 'axios';
 import clsx from 'clsx';
 import RoundButton from 'components/atoms/buttons/RoundButton';
-import { useSnackbar } from 'notistack';
+import { OPEN_ALERT } from 'context/actions';
+import { useGlobalContext } from 'context/globalContext';
 import { useHistory } from 'react-router-dom';
 
 import { Logout } from '@mui/icons-material';
@@ -16,8 +17,8 @@ interface AppbarProps {
 
 const Appbar: React.FC<AppbarProps> = ({ isSidebarOpen }) => {
     const classes = useStyles();
-    const { enqueueSnackbar } = useSnackbar();
     const history = useHistory();
+    const { dispatchContext } = useGlobalContext();
 
     const logout = () => {
         API.get('user/logout')
@@ -26,7 +27,9 @@ const Appbar: React.FC<AppbarProps> = ({ isSidebarOpen }) => {
                 history.push('/login');
             })
             .catch((err: AxiosError) => {
-                enqueueSnackbar(err.message, {
+                dispatchContext({
+                    type: OPEN_ALERT,
+                    message: err?.response?.data?.message ?? 'Undefined error',
                     variant: 'error'
                 });
             });

@@ -39,11 +39,11 @@ const useGlobalContext = (): any => useContext(globalContext);
 const { Provider }: any = globalContext;
 
 const GlobalContextProvider: React.FC = ({ children }) => {
-    const [contextState, dispatchContext] = useReducer((contextState: globalContextStateTYPE, action: ActionTYPE) => {
+    const [contextState, dispatchContext] = useReducer((state: globalContextStateTYPE, action: ActionTYPE) => {
         switch (action.type) {
             case OPEN_ALERT:
                 return {
-                    ...contextState,
+                    ...state,
                     alert: {
                         open: true,
                         variant: action.variant,
@@ -52,11 +52,11 @@ const GlobalContextProvider: React.FC = ({ children }) => {
                 };
             case CLOSE_ALERT:
                 return {
-                    ...contextState,
+                    ...state,
                     alert: initialState.alert
                 };
             default:
-                return contextState;
+                return state;
         }
     }, initialState);
 

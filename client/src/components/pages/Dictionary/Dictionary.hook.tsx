@@ -32,6 +32,7 @@ function usePlRuDict() {
                 data.map((el: any) => {
                     if (langFrom === 'en') {
                         return {
+                            text: el.wordText,
                             wordText: (
                                 <>
                                     {el.wordText}
@@ -53,6 +54,7 @@ function usePlRuDict() {
                         };
                     } else
                         return {
+                            text: el.wordText,
                             wordText: el.wordText,
                             translationText: el.translationText,
                             wordType: el.wordType,
@@ -61,6 +63,7 @@ function usePlRuDict() {
                         };
                 })
             );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
     const onDetailsWord = async ({ id }: any) => {
@@ -71,11 +74,10 @@ function usePlRuDict() {
                 setLoading(false);
             })
             .catch(err => {
-                console.log(err);
                 setLoading(false);
                 dispatchContext({
                     type: OPEN_ALERT,
-                    message: getErrorMessage(err.response.status, err.message),
+                    message: getErrorMessage(err.response.status, err?.response?.data?.message),
                     variant: 'error'
                 });
             });
@@ -96,7 +98,7 @@ function usePlRuDict() {
                 console.log(err);
                 dispatchContext({
                     type: OPEN_ALERT,
-                    message: getErrorMessage(err.response.status, err.message),
+                    message: getErrorMessage(err.response.status, err?.response?.data?.message),
                     variant: 'error'
                 });
             })
@@ -123,6 +125,14 @@ function usePlRuDict() {
         phoneticAudio && new Audio(phoneticAudio).play();
     };
 
+    const downloadWords = () => {
+        console.log(
+            TableData.map((el: any) => {
+                return { [el.text]: el.translationText };
+            })
+        );
+    };
+
     return {
         dictName,
         langFrom,
@@ -138,7 +148,8 @@ function usePlRuDict() {
         onDeleteWord,
         onPlayAudio,
         DetailsData,
-        setDetailsData
+        setDetailsData,
+        downloadWords
     };
 }
 

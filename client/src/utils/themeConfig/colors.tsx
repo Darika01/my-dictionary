@@ -1,0 +1,17 @@
+export const colorPrimaryMain = 'rgba(18, 21, 70, 1)'; // #121546
+export const colorSecondaryMain = 'rgba(234, 90, 118, 1)'; // #ea5a76
+export const colorErrorMain = 'rgba(226, 60, 60, 1)'; // #e23c3c
+export const colorWarningMain = 'rgba(237, 194, 66, 1)'; // #edc242
+export const colorSuccessMain = 'rgba(86, 201, 115, 1)';
+export const colorInfoMain = 'rgba(2, 136, 209, 1)';
+export const colorWhite = '#fff';
+export const colorBlack = '#000';
+export const colorBackgroundMain = '#f7f7f7';
+export const colorBackgroundLight = '#fff';
+export const colorBackgroundDark = '#eee';
+export const colorFontMain = '#333';
+export const colorFontLight = '#777';
+export const colorFontDark = '#000';
+export const colorBorderLight = 'rgba(0,0,0,0.06)';
+export const colorBorderMain = 'rgba(0,0,0,0.12)';
+export const colorBorderDark = 'rgba(0,0,0,0.28)';

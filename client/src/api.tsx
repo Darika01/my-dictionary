@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { getAccessToken } from 'utils/authenticationService';
+import { logoutUser } from 'utils/authService';
 
 import baseURL from './baseURL';
 
-export default axios.create({
+const defaultApi = axios.create({
     baseURL,
     timeout: 10000,
     headers: {
@@ -16,3 +17,16 @@ export default axios.create({
     },
     withCredentials: true
 });
+
+defaultApi.interceptors.response.use(
+    res => {
+        return res;
+    },
+    err => {
+        if (err?.response?.status === 401) {
+            logoutUser();
+        }
+        return Promise.reject(err);
+    }
+);
+export default defaultApi;

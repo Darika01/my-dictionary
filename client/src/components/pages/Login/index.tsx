@@ -4,9 +4,12 @@ import API from 'api';
 import RectangularButton from 'components/atoms/buttons/RectangularButton';
 import LoginLayout from 'components/layouts/LoginLayout';
 import FormikInput from 'components/molecules/textfields/FormikInput';
+import { useGlobalContext } from 'context/globalContext';
 import { Form, Formik } from 'formik';
-import { useSnackbar } from 'notistack';
+import { shallowEqual } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { alertActions } from 'redux/actions';
+import { useAppDispatch, useAppSelector } from 'redux/hooks';
 import * as Yup from 'yup';
 
 import { Typography } from '@mui/material';
@@ -30,9 +33,12 @@ const loginValidationSchema = Yup.object().shape({
 
 const Login: React.FC = () => {
     const classes = useStyles();
-
-    const { enqueueSnackbar } = useSnackbar();
     const history = useHistory();
+    const { dispatchContext } = useGlobalContext();
+    // shallowEqual to prevent rerender on every store update
+    const alert = useAppSelector(state => state.alert, shallowEqual);
+    const dispatch = useAppDispatch();
+    console.log(alert);
 
     const [IsLoading, setIsLoading] = useState(false);
 
@@ -45,10 +51,12 @@ const Login: React.FC = () => {
             })
             .catch(err => {
                 setIsLoading(false);
-                console.log(err.response);
-                enqueueSnackbar(err?.response?.data?.message, {
-                    variant: 'error'
-                });
+                dispatch(alertActions.open('error', err?.response?.data?.message ?? 'Undefined error'));
+                // dispatchContext({
+                //     type: OPEN_ALERT,
+                //     message: err?.response?.data?.message ?? 'Undefined error',
+                //     variant: 'error'
+                // });
             });
     };
 
@@ -75,14 +83,8 @@ const Login: React.FC = () => {
                     {formProps => (
                         <Form className={classes.form}>
                             <div>
-                                <FormikInput formik={formProps} name="username" label="Login" fullWidth />
-                                <FormikInput
-                                    formik={formProps}
-                                    name="password"
-                                    type="password"
-                                    label="Password"
-                                    fullWidth
-                                />
+                                <FormikInput showError name="username" label="Login" fullWidth />
+                                <FormikInput showError name="password" type="password" label="Password" fullWidth />
                             </div>
                             <RectangularButton
                                 text="Sign in"

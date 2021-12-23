@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import InfoSnackbar from 'components/molecules/InfoSnackbar';
 import { CLOSE_ALERT } from 'context/actions';
 import { useGlobalContext } from 'context/globalContext';
 import { useLocation } from 'react-router-dom';
@@ -29,13 +28,13 @@ const LoginLayout: React.FC = ({ children }) => {
             <main className={classes.content}>
                 {/* <Toolbar /> */}
                 {children}
-                {contextState.alert.open && (
+                {/* {contextState.alert.open && (
                     <InfoSnackbar
                         variant={contextState.alert.variant}
                         message={contextState.alert.message}
                         onClose={onCloseAlert}
                     />
-                )}
+                )} */}
             </main>
         </div>
     );
