@@ -1,8 +1,6 @@
-import { Theme } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { Backdrop } from '@mui/material';
+import { styled } from '@mui/system';
 
-export const useStyles = makeStyles((theme: Theme) => ({
-    backdrop: {
-        zIndex: theme.zIndex.drawer + 1
-    }
+export const StyledBackdrop = styled(Backdrop)(({ theme }) => ({
+    zIndex: theme.zIndex.drawer + 1
 }));

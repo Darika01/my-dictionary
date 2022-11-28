@@ -38,7 +38,7 @@ const typography = {
     button: {
         fontWeight: 500,
         fontSize: '1.4rem',
-        lineHeight: 1.16,
+        lineHeight: 1,
         letterSpacing: '0.125rem'
     },
     caption: {

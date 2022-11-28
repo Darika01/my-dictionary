@@ -27,7 +27,7 @@ const useAddingWordForm = (dictName: string, getData: () => void) => {
                 console.log(err);
                 dispatchContext({
                     type: OPEN_ALERT,
-                    message: getErrorMessage(err.response.status, err.message),
+                    message: getErrorMessage(err.response.status, err?.response?.data?.message),
                     variant: 'error'
                 });
             });

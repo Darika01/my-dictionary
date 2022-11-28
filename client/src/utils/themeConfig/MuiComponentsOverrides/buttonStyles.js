@@ -11,6 +11,15 @@ const buttonStyles = {
                 border: '.1rem solid',
                 padding: '.9rem 1.2rem'
             },
+            outlinedSizeLarge: {
+                padding: '.8rem 1.5rem'
+            },
+            outlinedSizeMedium: {
+                padding: '.7rem 1.3rem'
+            },
+            outlinedSizeSmall: {
+                padding: '.6rem 1.1rem'
+            },
             text: {
                 padding: '.9rem 1.2rem'
             },
@@ -18,17 +27,15 @@ const buttonStyles = {
                 ...typography.button
             },
             sizeLarge: {
-                padding: '1.1rem 1.6rem 1.2rem 1.6rem'
+                padding: '.9rem 1.6rem',
+                fontSize: '1.4rem'
             },
-            iconSizeLarge: {
-                '& > *:first-child': {
-                    fontSize: 'inherit',
-                    height: '1.4rem',
-                    width: 'auto'
-                }
+            sizeMedium: {
+                padding: '.8rem 1.4rem'
             },
             sizeSmall: {
-                padding: '.6rem .8rem'
+                padding: '.7rem 1.2rem',
+                fontSize: '1.2rem'
             },
             startIcon: {
                 marginRight: '.8rem',
@@ -37,6 +44,21 @@ const buttonStyles = {
             endIcon: {
                 marginLeft: '.8rem',
                 marginRight: '0'
+            },
+            iconSizeLarge: {
+                '& .MuiSvgIcon-root': {
+                    fontSize: '2rem'
+                }
+            },
+            iconSizeMedium: {
+                '& .MuiSvgIcon-root': {
+                    fontSize: '1.6rem'
+                }
+            },
+            iconSizeSmall: {
+                '& .MuiSvgIcon-root': {
+                    fontSize: '1.6rem'
+                }
             }
         }
     },

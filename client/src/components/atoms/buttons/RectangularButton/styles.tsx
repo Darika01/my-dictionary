@@ -1,62 +1,58 @@
-import getLighterColor from 'utils/getLighterColor';
+import { Button, CircularProgress } from '@mui/material';
+import { Theme } from '@mui/material/styles';
+import { styled } from '@mui/system';
 
-import { Theme } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-
-export type colorTYPE = 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | 'grey';
+export type ColorTYPE = 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
+export type VariantTYPE = 'text' | 'outlined' | 'contained';
 
 type StylesProps = {
-    color: colorTYPE;
+    color: ColorTYPE;
+    variant: VariantTYPE;
+    theme: Theme;
 };
 
-export const useStyles = makeStyles((theme: Theme) => ({
-    wrapper: {
-        position: 'relative'
-    },
-    buttonProgress: {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        marginTop: '-0.8rem',
-        marginLeft: '-0.8rem',
-        color: ({ color }) => (color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main)
-    },
-    contained: {
-        color: theme.palette.common.white,
-        backgroundColor: ({ color }: StylesProps) =>
-            color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main,
-        '&:hover': {
-            backgroundColor: ({ color }) => (color === 'grey' ? theme.palette.grey[500] : theme.palette[color].dark)
-        },
-        '&:active': {
-            backgroundColor: ({ color }) => (color === 'grey' ? theme.palette.grey[500] : theme.palette[color].light)
-        }
-    },
-    outlined: {
-        color: ({ color }) => (color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main),
-        borderColor: ({ color }) => (color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main),
-        '&:hover': {
-            backgroundColor: ({ color }) =>
-                getLighterColor(color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main, 0.08),
-            borderColor: ({ color }) => (color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main)
-        },
-        '&:active': {
-            backgroundColor: ({ color }) =>
-                getLighterColor(color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main, 0.15),
-            borderColor: ({ color }) => (color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main)
-        }
-    },
+export const ButtonProgress = styled(CircularProgress)({
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: '-.8rem',
+    marginLeft: '-.8rem'
+});
 
-    text: {
-        color: ({ color }) => (color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main),
-        backgroundColor: theme.palette.common.white,
-        '&:hover': {
-            backgroundColor: ({ color }) =>
-                getLighterColor(color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main, 0.08)
-        },
-        '&:active': {
-            backgroundColor: ({ color }) =>
-                getLighterColor(color === 'grey' ? theme.palette.grey[500] : theme.palette[color].main, 0.15)
-        }
-    }
-}));
+export const StyledButton = styled(Button)(({ theme }): any => ({ color, variant }: StylesProps) => {
+    if (variant === 'contained')
+        return {
+            color: theme.palette.common.white,
+            backgroundColor: theme.palette[color].main,
+            '&:hover': {
+                backgroundColor: theme.palette[color].dark
+            },
+            '&:active': {
+                backgroundColor: theme.palette[color].light
+            }
+        };
+    if (variant === 'outlined')
+        return {
+            color: theme.palette[color].main,
+            borderColor: theme.palette[color].main,
+            '&:hover': {
+                backgroundColor: theme.palette[color].hover,
+                borderColor: theme.palette[color].main
+            },
+            '&:active': {
+                backgroundColor: theme.palette[color].active,
+                borderColor: theme.palette[color].main
+            }
+        };
+    if (variant === 'text')
+        return {
+            color: theme.palette[color].main,
+            backgroundColor: theme.palette.common.white,
+            '&:hover': {
+                backgroundColor: theme.palette[color].hover
+            },
+            '&:active': {
+                backgroundColor: theme.palette[color].active
+            }
+        };
+}) as typeof Button;

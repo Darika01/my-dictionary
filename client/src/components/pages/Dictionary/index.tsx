@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import RectangularButton from 'components/atoms/buttons/RectangularButton';
 import BackdropLoader from 'components/molecules/BackdropLoader';
 import CustomSwitch from 'components/molecules/CustomSwitch';
 import AddingWordForm from 'components/organisms/AddingWordForm';
@@ -7,8 +8,12 @@ import CustomTable from 'components/organisms/CustomTable';
 import TranslationEditingForm from 'components/organisms/TranslationEditingForm';
 import WordDetailsDialog from 'components/organisms/WordDetailsDialog';
 
+import { FileDownload } from '@mui/icons-material';
+import { Typography } from '@mui/material';
+
 import usePlRuDict from './Dictionary.hook';
 import { setColumns } from './dictionaryHelpers';
+import { TableHeader } from './styles';
 
 // import WordEditDialog from './WordEditDialog/WordEditDialog';
 
@@ -28,7 +33,8 @@ const PlRuDict: React.FC = () => {
         onEditData,
         onDeleteWord,
         DetailsData,
-        setDetailsData
+        setDetailsData,
+        downloadWords
     } = usePlRuDict();
 
     const [LangSwitch, setLangSwitch] = useState<'wordText' | 'translationText'>('translationText');
@@ -38,12 +44,26 @@ const PlRuDict: React.FC = () => {
             {(Loading || loading) && <BackdropLoader />}
             <AddingWordForm dictName={dictName} getData={fetcher} />
 
-            <CustomSwitch
-                labelOn={langFrom.toLocaleUpperCase()}
-                labelOff={langTo.toLocaleUpperCase()}
-                checked={LangSwitch === 'translationText'}
-                onChange={() => setLangSwitch(LangSwitch === 'wordText' ? 'translationText' : 'wordText')}
-            />
+            <TableHeader>
+                <div>
+                    <Typography variant="body1" mr={2}>
+                        Show text in selected language
+                    </Typography>
+                    <CustomSwitch
+                        labelOn={langFrom.toLocaleUpperCase()}
+                        labelOff={langTo.toLocaleUpperCase()}
+                        checked={LangSwitch === 'translationText'}
+                        onChange={() => setLangSwitch(LangSwitch === 'wordText' ? 'translationText' : 'wordText')}
+                    />
+                </div>
+                <RectangularButton
+                    text="Export words"
+                    size="small"
+                    variant="outlined"
+                    handleClick={downloadWords}
+                    startIcon={<FileDownload />}
+                />
+            </TableHeader>
             <CustomTable
                 columns={setColumns(langFrom.toLocaleUpperCase(), langTo.toLocaleUpperCase())}
                 data={TableData}

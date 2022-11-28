@@ -1,13 +1,11 @@
 import { Switch, Typography } from '@mui/material';
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/system';
 
-const useStyles = makeStyles(() => ({
-    switchContainer: {
-        display: 'inline-flex',
-        alignItems: 'center',
-        marginBottom: '1rem'
-    }
-}));
+export const SwitchContainer = styled(Typography)({
+    display: 'inline-flex',
+    alignItems: 'center',
+    marginBottom: '1rem'
+});
 
 interface CustomSwitchProps {
     labelOn: string;
@@ -17,13 +15,12 @@ interface CustomSwitchProps {
 }
 
 const CustomSwitch: React.FC<CustomSwitchProps> = ({ labelOn, labelOff, checked, onChange }) => {
-    const classes = useStyles();
     return (
-        <Typography component="label" className={classes.switchContainer}>
+        <SwitchContainer component="label">
             <Typography variant="body1">{labelOff}</Typography>
-            <Switch checked={checked} onChange={onChange} name="langSwitch" />
+            <Switch checked={checked} onChange={onChange} name="langSwitch" color="secondary" />
             <Typography variant="body1">{labelOn}</Typography>
-        </Typography>
+        </SwitchContainer>
     );
 };
 

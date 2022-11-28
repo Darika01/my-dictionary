@@ -99,7 +99,7 @@ const TranslationEditingForm: React.FC<TranslationEditingFormProps> = ({ data, d
                                         text="Close"
                                         type="reset"
                                         variant="outlined"
-                                        color="grey"
+                                        // color="grey"
                                         startIcon={<Close />}
                                     />
                                     <RectangularButton

@@ -1,20 +1,18 @@
 import { Tooltip, TooltipProps } from '@mui/material';
 
-import { useStyles } from './styles';
+import { StyledPopper } from './styles';
 
 interface ArrowTooltipProps extends TooltipProps {
     title: string;
     disabled?: boolean;
 }
 
-const ArrowTooltip: React.FC<ArrowTooltipProps> = ({ children, title, disabled, ...props }) => {
-    const classes = useStyles();
+const ArrowTooltip: React.FC<ArrowTooltipProps> = ({ children, title, disabled }) => {
     return title && !disabled ? (
         <Tooltip
-            {...props}
             title={title}
-            classes={classes}
             arrow
+            PopperComponent={StyledPopper}
             placement="top"
             enterDelay={300}
             leaveDelay={100}

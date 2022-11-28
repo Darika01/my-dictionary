@@ -52,9 +52,9 @@ const getAllWords = async (req, res) => {
         await Dictionary.findOne({ name: req.params.dictName })
             .populate({
                 path: 'words',
-                match: { author: { $in: user._id } }
+                match: { author: { $in: user._id } },
+                options: { sort: { updatedAt: -1 } }
             })
-            .sort({ updatedAt: -1 })
             .exec((err, data) => {
                 if (err) return res.status(err).json({ message: err });
                 console.log(data);

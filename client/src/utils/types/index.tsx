@@ -29,3 +29,5 @@ export type googleTranslateWordDataTYPE = {
     partOfSpeech: string;
     definitions: googleTranslateWordDataDefinitionTYPE[];
 };
+
+export type ColorTYPE = 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' | 'grey';
